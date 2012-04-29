@@ -1,5 +1,5 @@
-require "monadic/version"
+require 'monadic/version'
 
-module Monadic
-  # Your code goes here...
-end
+$LOAD_PATH << File.expand_path('..', __FILE__)
+
+require 'monadic/option'
