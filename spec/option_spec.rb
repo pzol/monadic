@@ -5,6 +5,16 @@ describe 'Option' do
      Option(nil).a.b.c.should == None
   end
 
+  it 'None stays None' do
+    Option(nil)._.should == None
+  end
+
+  it 'None to_s is "None"' do
+    option = Option(nil)
+    "#{option}".should   == "None"
+    "#{option._}".should == "None"
+  end
+
   it '[] as value always returns None()' do
     Option([]).a.should == None
   end
