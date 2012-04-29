@@ -7,6 +7,14 @@ describe 'Option' do
 
   it 'None stays None' do
     Option(nil)._.should == None
+    Option(nil).none?.should be_true
+    Option(nil).empty?.should be_true
+  end
+
+  it 'Some stays Some' do
+    Option('foo').should be_kind_of(Some) 
+    Option('foo').none?.should be_false
+    Option('foo').empty?.should be_false
   end
 
   it 'None to_s is "None"' do

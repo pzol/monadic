@@ -35,13 +35,20 @@ Basic usage examples:
     Option(obj).a.b.c            == None
 
     # None stays None
-    Option(nil)._             == "None"
-    "#{Option(nil)}"          == "None"
-    Option(nil)._("unknown")  == "unknown"
+    Option(nil)._                == "None"
+    "#{Option(nil)}"             == "None"
+    Option(nil)._("unknown")     == "unknown"
+    Option(nil).none?            == true
+    Option(nil).empty?           == true
+    Option(nil).truly?           == false
 
+    # Some stays Some, unless you unbox it
     Option('FOO').downcase       == Some('foo') 
     Option('FOO').downcase.value == "foo"
     Option('FOO').downcase._     == "foo"
+    Option('foo').none?          == false
+    Option('foo').empty?         == false
+    Option('foo').truly?         == true
 
 Map, select:
     
@@ -54,13 +61,11 @@ Map, select:
 
 Treat it like an array:
 
-  Option(123).to_a         == [123]
-  Option([123, 456]).to_a  == [123, 456]
-  Option(nil)              == []
+    Option(123).to_a         == [123]
+    Option([123, 456]).to_a  == [123, 456]
+    Option(nil)              == []
 
 Falsey values (kind-of) examples:
-
-Remember! an Option is never falsey, if you want to know if it is false, call `#none?`
 
     user = Option(User.find(123))
     user.value('You are not logged in') { |user| "You are logged in as #{user.name}" }.should == 'You are logged in as foo'
@@ -74,6 +79,10 @@ Remember! an Option is never falsey, if you want to know if it is false, call `#
     user.subscribed?.truly?       # true if subscribed is true
     user.subscribed?.value(false) # same as above
     user.subscribed?.or(false)    # same as above
+
+Remember! an Option is never false, if you want to know if it is false, call `#none?` of `#truly?`
+
+`#truly?` will return true or false, always.
 
 Slug example
 

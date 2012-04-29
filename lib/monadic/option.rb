@@ -12,7 +12,7 @@ class Some
   end
 
   def none?
-    @value.is_a? None
+    false
   end
   alias :empty? :none?
 
@@ -76,6 +76,11 @@ class None
       []
     end
     alias :to_a :to_ary
+
+    def none?
+      true
+    end
+    alias :empty? :none?
 
     def truly?
       false
