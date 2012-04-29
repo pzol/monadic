@@ -7,7 +7,7 @@ See also http://en.wikipedia.org/wiki/Monad
 Planned are the following monadics:
 
 - Option (Maybe in Haskell)
-- Either
+- Either *planned
 
 ## Installation
 
@@ -37,6 +37,8 @@ Basic usage examples:
 
     Option('FOO').downcase.value == "foo"
     Option('FOO').downcase._ == "foo"
+
+    # None stays None
 
 Map, select:
     
