@@ -30,15 +30,18 @@ Is an optional type, which helps to handle error conditions gracefully. The one 
 
 Basic usage examples:
 
+    # handling nil (None serves as NullObject)
     obj = nil
-    Option(obj).a.b.c == None
-
-    Option('FOO').downcase == Some('foo') 
-
-    Option('FOO').downcase.value == "foo"
-    Option('FOO').downcase._ == "foo"
+    Option(obj).a.b.c            == None
 
     # None stays None
+    Option(nil)._             == "None"
+    "#{Option(nil)}"          == "None"
+    Option(nil)._("unknown")  == "unknown"
+
+    Option('FOO').downcase       == Some('foo') 
+    Option('FOO').downcase.value == "foo"
+    Option('FOO').downcase._     == "foo"
 
 Map, select:
     
