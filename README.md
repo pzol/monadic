@@ -15,15 +15,15 @@ We have the following monadics:
 Is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Option, stays in the Option'. 
 
 
-    Option(User.find(123)).name._
+    Option(User.find(123)).name._         # ._ is a shortcut for .value 
 
-    # if you prefer the alias 
+    # if you prefer the alias Maybe instead of option
     Maybe(User.find(123)).name._
 
-    # confidently diving into hashes
-
-    Maybe({})[:a][:b][:c]     == None
-    Maybe(a: 1)[:a]._         == 1
+    # confidently diving into nested hashes
+    Maybe({})[:a][:b][:c]                   == None
+    Maybe({})[:a][:b][:c].value('unknown')  == None
+    Maybe(a: 1)[:a]._                       == 1
 
 
 Basic usage examples:
