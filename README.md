@@ -1,32 +1,30 @@
 # Monadic
 
-is a gem to help dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in Scala to my ruby projects (hence I will be using more Scala like constructs than Haskell).
+helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in Scala to my ruby projects (hence I will be using more Scala like constructs than Haskell).
 
 See also http://en.wikipedia.org/wiki/Monad
 
-Planned are the following monadics:
+We have the following monadics:
 
 - Option (Maybe in Haskell)
 - Either *planned
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'monadic'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install monadic
-
 ## Usage
 
 ### Option
-Is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Option, stays in the Option'.
+Is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Option, stays in the Option'. 
+
+
+    Option(User.find(123)).name._
+
+    # if you prefer the alias 
+    Maybe(User.find(123)).name._
+
+    # confidently diving into hashes
+
+    Maybe({})[:a][:b][:c]     == None
+    Maybe(a: 1)[:a]._         == 1
+
 
 Basic usage examples:
 
@@ -68,6 +66,8 @@ Treat it like an array:
 Falsey values (kind-of) examples:
 
     user = Option(User.find(123))
+    user.name._
+
     user.value('You are not logged in') { |user| "You are logged in as #{user.name}" }.should == 'You are logged in as foo'
 
     if user != nil
@@ -105,8 +105,31 @@ Slug example
     end
 
 
-see also [Option Type ](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/) and 
-[NullObject and Falsiness by @avdi](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
+see also
+
+ * [Option Type ](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
+ * [NullObject and Falsiness by @avdi](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
+ * [andand](https://github.com/raganwald/andand/blob/master/README.textile)
+ * [ick](http://ick.rubyforge.org/)
+ * [Monads in Ruby](http://moonbase.rydia.net/mental/writings/programming/monads-in-ruby/00introduction.html)
+ * [The Maybe Monad in Ruby](http://pretheory.wordpress.com/2008/02/14/the-maybe-monad-in-ruby/)
+ * [Monads in Ruby with nice syntax](http://www.valuedlessons.com/2008/01/monads-in-ruby-with-nice-syntax.html)
+ * [Maybe in Ruby](https://github.com/bhb/maybe)
+ * [Monads on the Cheap](http://osteele.com/archives/2007/12/cheap-monads)
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+    gem 'monadic'
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install monadic
 
 ## Contributing
 
