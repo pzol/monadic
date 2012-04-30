@@ -98,6 +98,11 @@ describe 'Option' do
     Option(nil).to_a.should == []
   end
 
+  it 'diving into hashes' do
+    Maybe({})['a']['b']['c'].should == None
+    Maybe({a: 1})[:a]._.should == 1
+  end
+
   it 'should support Rumonades example' do
     require 'active_support/time'
     def format_date_in_march(time_or_date_or_nil)
