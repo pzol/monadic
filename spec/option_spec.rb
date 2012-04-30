@@ -98,4 +98,20 @@ describe 'Option' do
     Option(nil).to_a.should == []
   end
 
+  it 'should support Rumonades example' do
+    require 'active_support/time'
+    def format_date_in_march(time_or_date_or_nil)
+    Option(time_or_date_or_nil).    # wraps possibly-nil value in an Option monad (Some or None)
+      map(&:to_date).               # transforms a contained Time value into a Date value
+      select {|d| d.month == 3}.    # filters out non-matching Date values (Some becomes None)
+      map(&:to_s).                  # transforms a contained Date value into a String value
+      map {|s| s.gsub('-', '')}.    # transforms a contained String value by removing '-'
+      value("not in march!")        # returns the contained value, or the alternative if None
+    end
+
+    format_date_in_march(nil).should == "not in march!"
+    format_date_in_march(Time.parse('2009-01-01 01:02')).should == "not in march!"
+    format_date_in_march(Time.parse('2011-03-21 12:34')).should == "20110321"    
+end
+
 end
