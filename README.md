@@ -18,14 +18,14 @@ Thus you contain the erroneous behaviour within a monad - an indivisible, impene
 Is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Option, stays in the Option'. 
 
 
-    Option(User.find(123)).name._         # ._ is a shortcut for .value 
+    Option(User.find(123)).name._         # ._ is a shortcut for .fetch 
 
     # if you prefer the alias Maybe instead of option
     Maybe(User.find(123)).name._
 
     # confidently diving into nested hashes
     Maybe({})[:a][:b][:c]                   == None
-    Maybe({})[:a][:b][:c].value('unknown')  == None
+    Maybe({})[:a][:b][:c].fetch('unknown')  == None
     Maybe(a: 1)[:a]._                       == 1
 
 Basic usage examples:
@@ -43,7 +43,7 @@ Basic usage examples:
 
     # Some stays Some, unless you unbox it
     Option('FOO').downcase       == Some('foo') 
-    Option('FOO').downcase.value == "foo"
+    Option('FOO').downcase.fetch == "foo"
     Option('FOO').downcase._     == "foo"
     Option('foo').empty?         == false
     Option('foo').truly?         == true
@@ -68,7 +68,7 @@ Falsey values (kind-of) examples:
     user = Option(User.find(123))
     user.name._
 
-    user.value('You are not logged in') { |user| "You are logged in as #{user.name}" }.should == 'You are logged in as foo'
+    user.fetch('You are not logged in') { |user| "You are logged in as #{user.name}" }.should == 'You are logged in as foo'
 
     if user != nil
       "You are logged in as foo"
@@ -77,7 +77,7 @@ Falsey values (kind-of) examples:
 
     user.subscribed?              # always true
     user.subscribed?.truly?       # true if subscribed is true
-    user.subscribed?.value(false) # same as above
+    user.subscribed?.fetch(false) # same as above
     user.subscribed?.or(false)    # same as above
 
 Remember! an Option is never false (in Ruby terms), if you want to know if it is false, call `#empty?` of `#truly?`
