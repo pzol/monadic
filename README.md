@@ -2,7 +2,7 @@
 
 helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in Scala to my ruby projects (hence I will be using more Scala like constructs than Haskell).
 
-See also http://en.wikipedia.org/wiki/Monad
+My motivation to create this gem was that I often work with nested Hashes and need to reach deeply inside of them so my code is sprinkled with things like some_hash.fetch(:one, {}).fetch(:two, {}).fetch(:three, "unknown"). 
 
 We have the following monadics:
 
@@ -107,6 +107,7 @@ Slug example
 
 see also
 
+ * [Wikipedia Monad](See also http://en.wikipedia.org/wiki/Monad)
  * [Monad equivalend in Ruby](http://stackoverflow.com/questions/2709361/monad-equivalent-in-ruby)
  * [Option Type ](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
  * [NullObject and Falsiness by @avdi](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
