@@ -116,6 +116,7 @@ see also
  * [Monads in Ruby with nice syntax](http://www.valuedlessons.com/2008/01/monads-in-ruby-with-nice-syntax.html)
  * [Maybe in Ruby](https://github.com/bhb/maybe)
  * [Monads on the Cheap](http://osteele.com/archives/2007/12/cheap-monads)
+ * [Rumonade](https://github.com/ms-ati/rumonade)
 
 ## Installation
 
