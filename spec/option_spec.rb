@@ -6,7 +6,7 @@ describe 'Option' do
   end
 
   it 'None stays None' do
-    Option(nil)._.should == None
+    expect { Option(nil)._ }.to raise_error Monadic::NoValueError
     Option(nil).empty?.should be_true
   end
 
@@ -22,7 +22,6 @@ describe 'Option' do
   it 'None#to_s is "None"' do
     option = Option(nil)
     "#{option}".should   == "None"
-    "#{option._}".should == "None"
   end
 
   it 'None is always empty' do
@@ -38,24 +37,24 @@ describe 'Option' do
     Option('FOO').downcase.should == Some('foo')
   end
 
-  it 'returns the value of an option' do 
-    Option('foo').value.should == 'foo'
+  it '#fetch returns the value of an option' do 
+    Option('foo').fetch.should == 'foo'
     Option('foo')._.should == 'foo'
   end
 
   it 'returns the value of an option with a default, in case value is None' do
-    Option(nil).value('bar').should == 'bar'
+    Option(nil).fetch('bar').should == 'bar'
     Option(nil)._('bar').should == 'bar'
   end
 
   it 'returns the value and not the default if it is Some' do
-    Option('FOO').downcase.value('bar').should == 'foo'
+    Option('FOO').downcase.fetch('bar').should == 'foo'
     Option('FOO').downcase._('bar').should == 'foo'
   end
 
   it 'returns the value applied to a block if it is Some' do
-    Option('foo').value('bar') { |val| "You are logged in as #{val}" }.should == 'You are logged in as foo'
-    Option(nil).value('You are not logged in') { |val| "You are logged in as #{val}" }.should == 'You are not logged in'
+    Option('foo').fetch('bar') { |val| "You are logged in as #{val}" }.should == 'You are logged in as foo'
+    Option(nil).fetch('You are not logged in') { |val| "You are logged in as #{val}" }.should == 'You are not logged in'
   end
 
   it 'is never falsey' do
@@ -73,9 +72,9 @@ describe 'Option' do
     end
   end
 
-  it 'allows to use a block with value and _' do
+  it 'allows to use a block with fetch and _' do
     user = Option(User.new('foo'))
-    user.value('You are not logged in') { |user| "You are logged in as #{user.name}" }.should == 'You are logged in as foo'
+    user.fetch('You are not logged in') { |user| "You are logged in as #{user.name}" }.should == 'You are logged in as foo'
   end
 
   it 'handles (kind-of) falsey values' do
@@ -120,12 +119,11 @@ describe 'Option' do
       select {|d| d.month == 3}.    # filters out non-matching Date values (Some becomes None)
       map(&:to_s).                  # transforms a contained Date value into a String value
       map {|s| s.gsub('-', '')}.    # transforms a contained String value by removing '-'
-      value("not in march!")        # returns the contained value, or the alternative if None
+      fetch("not in march!")        # returns the contained value, or the alternative if None
     end
 
     format_date_in_march(nil).should == "not in march!"
     format_date_in_march(Time.parse('2009-01-01 01:02')).should == "not in march!"
     format_date_in_march(Time.parse('2011-03-21 12:34')).should == "20110321"    
-end
-
+  end
 end
