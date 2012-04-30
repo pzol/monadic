@@ -15,10 +15,19 @@ describe 'Option' do
     Option('foo').empty?.should be_false
   end
 
-  it 'None to_s is "None"' do
+  it 'Some#to_s is "Some(value)"' do
+    Some(123).to_s.should == "Some(123)"
+  end
+
+  it 'None#to_s is "None"' do
     option = Option(nil)
     "#{option}".should   == "None"
     "#{option._}".should == "None"
+  end
+
+  it 'None is always empty' do
+    None.empty?.should be_true
+    Maybe(nil).empty?.should be_true
   end
 
   it '[] as value always returns None()' do
