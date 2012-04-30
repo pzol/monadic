@@ -35,7 +35,7 @@ class Some
     return default if empty?
     return block.call(@value)  if block_given?
     return @value
-  end  
+  end
   alias :or :value
   alias :_  :value
 
@@ -46,7 +46,7 @@ class Some
 
   def method_missing(m, *args)
     Option(@value.__send__(m, *args))
-  end  
+  end
 
   def select(func = nil, &block)
     return Option(@value.select(&block)) if @value.is_a?(Enumerable)
@@ -57,7 +57,7 @@ class Some
   def ==(other)
     return false unless other.is_a? Some
     @value == other.instance_variable_get(:@value)
-  end  
+  end
 
   def to_s
     "Some(#{@value.to_s})"
