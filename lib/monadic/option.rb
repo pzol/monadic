@@ -67,18 +67,18 @@ end
 # Represents the Option if there is no value available
 class None
   class << self
-    def method_missing(m, *args)
-      self
+    def to_ary
+      []
     end
+    alias :to_a :to_ary
 
     def empty?
       true
     end
 
-    def to_ary
-      []
+    def method_missing(m, *args)
+      self
     end
-    alias :to_a :to_ary
 
     def truly?
       false
@@ -89,6 +89,5 @@ class None
     end
     alias :or :value
     alias :_  :value
-
   end
 end
