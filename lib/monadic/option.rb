@@ -57,6 +57,10 @@ class Some
     return false unless other.is_a? Some
     @value == other.instance_variable_get(:@value)
   end  
+
+  def to_s
+    "Some(#{@value.to_s})"
+  end
 end
 
 class None
