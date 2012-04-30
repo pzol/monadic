@@ -30,14 +30,14 @@ class Some
   end
   alias :to_a :to_ary
 
-  def map(&block)
+  def map(func = nil, &block)
     return Option(@value.map(&block)) if @value.is_a?(Enumerable)
-    return Option(block.call)
+    return Option((func || block).call(@value))
   end
 
-  def select(&block)
+  def select(func = nil, &block)
     return Option(@value.select(&block)) if @value.is_a?(Enumerable)
-    return None unless block.call(@value)
+    return None unless (func || block).call(@value)
     return self
   end
 
