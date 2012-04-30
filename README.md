@@ -9,6 +9,9 @@ We have the following monadics:
 - Option (Maybe in Haskell)
 - Either *planned
 
+What's the point of using monads in ruby? To me it started with having a safe way to deal with nil objects and other exceptions.
+Thus you contain the erroneous behaviour within a monad - an indivisible, impenetrable unit.
+
 ## Usage
 
 ### Option
@@ -24,7 +27,6 @@ Is an optional type, which helps to handle error conditions gracefully. The one 
     Maybe({})[:a][:b][:c]                   == None
     Maybe({})[:a][:b][:c].value('unknown')  == None
     Maybe(a: 1)[:a]._                       == 1
-
 
 Basic usage examples:
 
@@ -78,7 +80,7 @@ Falsey values (kind-of) examples:
     user.subscribed?.value(false) # same as above
     user.subscribed?.or(false)    # same as above
 
-Remember! an Option is never false, if you want to know if it is false, call `#empty?` of `#truly?`
+Remember! an Option is never false (in Ruby terms), if you want to know if it is false, call `#empty?` of `#truly?`
 
 `#truly?` will return true or false, always.
 
