@@ -55,14 +55,14 @@ module Monadic
       return self
     end
 
-    def ==(other)
-      return false unless other.is_a? Some
-      @value == other.instance_variable_get(:@value)
-    end
-
     def to_s
       "Some(#{@value.to_s})"
     end
+
+    def ==(other)
+      return false unless other.is_a? Some
+      @value == other.instance_variable_get(:@value)
+    end    
   end
 
   # Represents the Option if there is no value available
