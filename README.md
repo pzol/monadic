@@ -105,6 +105,7 @@ Slug example
 
 see also
 
+ * [Monad equivalend in Ruby](http://stackoverflow.com/questions/2709361/monad-equivalent-in-ruby)
  * [Option Type ](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
  * [NullObject and Falsiness by @avdi](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
  * [andand](https://github.com/raganwald/andand/blob/master/README.textile)
@@ -115,6 +116,7 @@ see also
  * [Maybe in Ruby](https://github.com/bhb/maybe)
  * [Monads on the Cheap](http://osteele.com/archives/2007/12/cheap-monads)
  * [Rumonade](https://github.com/ms-ati/rumonade)
+ * [Monads for functional programming](http://homepages.inf.ed.ac.uk/wadler/papers/marktoberdorf/baastad.pdf)
 
 ## Installation
 
