@@ -36,7 +36,6 @@ Basic usage examples:
     Option(nil)._                == "None"
     "#{Option(nil)}"             == "None"
     Option(nil)._("unknown")     == "unknown"
-    Option(nil).none?            == true
     Option(nil).empty?           == true
     Option(nil).truly?           == false
 
@@ -44,7 +43,6 @@ Basic usage examples:
     Option('FOO').downcase       == Some('foo') 
     Option('FOO').downcase.value == "foo"
     Option('FOO').downcase._     == "foo"
-    Option('foo').none?          == false
     Option('foo').empty?         == false
     Option('foo').truly?         == true
 
@@ -80,7 +78,7 @@ Falsey values (kind-of) examples:
     user.subscribed?.value(false) # same as above
     user.subscribed?.or(false)    # same as above
 
-Remember! an Option is never false, if you want to know if it is false, call `#none?` of `#truly?`
+Remember! an Option is never false, if you want to know if it is false, call `#empty?` of `#truly?`
 
 `#truly?` will return true or false, always.
 

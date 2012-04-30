@@ -7,13 +7,11 @@ describe 'Option' do
 
   it 'None stays None' do
     Option(nil)._.should == None
-    Option(nil).none?.should be_true
     Option(nil).empty?.should be_true
   end
 
   it 'Some stays Some' do
     Option('foo').should be_kind_of(Some) 
-    Option('foo').none?.should be_false
     Option('foo').empty?.should be_false
   end
 
@@ -54,11 +52,6 @@ describe 'Option' do
   it 'is never falsey' do
     Option('foo').should_not be_false
     Option(nil).should_not be_false
-  end
-
-  it 'tells you if it is none when calling #none?' do
-    Option('foo').none?.should be_false
-    Option(nil).none?.should be_true
   end
 
   class User 

@@ -11,10 +11,9 @@ class Some
     @value = value
   end
 
-  def none?
+  def empty?
     false
   end
-  alias :empty? :none?
 
   def truly?
     @value == true
@@ -43,7 +42,7 @@ class Some
   end
 
   def value(default=None, &block)
-    return default if none?
+    return default if empty?
     return block.call(@value)  if block_given?
     return @value
   end  
@@ -77,10 +76,9 @@ class None
     end
     alias :to_a :to_ary
 
-    def none?
+    def empty?
       true
     end
-    alias :empty? :none?
 
     def truly?
       false
