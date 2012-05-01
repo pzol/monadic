@@ -1,9 +1,8 @@
 require 'monadic/version'
 
-$LOAD_PATH << File.expand_path('..', __FILE__)
-
 require 'monadic/errors'
 require 'monadic/option'
+require 'monadic/either'
 
 module Monadic
 end
