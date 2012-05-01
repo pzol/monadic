@@ -1,7 +1,5 @@
-# Chain various method calls 
+# Chain various method calls
 module Either
-  class NoEitherError < StandardError; end
-
   def self.chain(initial=nil, &block)
     Either::Chain.new(&block).call(initial)
   end
