@@ -6,8 +6,8 @@ My motivation to create this gem was that I often work with nested Hashes and ne
 
 We have the following monadics:
 
-- Option (Maybe in Haskell)
-- Either *planned
+- Option (Maybe in Haskell) - Scala like with a rubyesque flavour
+- Either - more Haskell like
 
 What's the point of using monads in ruby? To me it started with having a safe way to deal with nil objects and other exceptions.
 Thus you contain the erroneous behaviour within a monad - an indivisible, impenetrable unit.
@@ -16,7 +16,6 @@ Thus you contain the erroneous behaviour within a monad - an indivisible, impene
 
 ### Option
 Is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Option, stays in the Option'. 
-
 
     Option(User.find(123)).name._         # ._ is a shortcut for .fetch 
 
@@ -104,10 +103,65 @@ Slug example
       Option(title).strip.downcase.tr_s('^[a-z0-9]', '-')._('unknown-title')
     end
 
+### Either
+Its main purpose here to handle errors gracefully, by chaining multiple calls in a functional way and stop evaluating them as soon as the first fails.
+Assume you need several calls to construct some object in order to be useful, after each you need to check for success. Also you want to catch exceptions and not let them bubble upwards.
 
-see also
+`Success` represents a successfull execution of an operation (Right in Scala, Haskell).  
+`Failure` represents a failure to execute an operation (Left in Scala, Haskell).  
+
+The `Either()` wrapper will treat `nil`, `false` or `empty?` as a `Failure` and all others as `Success`.
+
+    result = parse_and_validate_params(params).
+                bind ->(user_id) { User.find(user_id) }.        # if #find returns null it will become a Failure
+                bind ->(user)    { authorized?(user); user }.   # if authorized? raises an Exception, it will be a Failure 
+                bind ->(user)    { UserDecorator(user) }
+
+    if result.success?
+      @user = result.fetch                                      # result.fetch or result._ contains the 
+      render 'page'
+    else
+      @error = result.fetch
+      render 'error_page'
+    end
+
+You can use alternate syntaxes to achieve the same goal:
+
+    # block and Haskell like >= operator
+    Either(operation).
+      >= { successful_method }.
+      >= { failful_operation }
+
+    # start with a Success, for instance a parameter
+    Success('pzol').
+      bind ->(previous) { good }.
+      bind ->           { bad  }
+
+    Either.chain do
+      bind ->                   { good   }                     # >= is not supported for Either.chain, only bind
+      bind ->                   { better }                     # better returns Success(some_int)
+      bind ->(previous_result)  { previous_result + 1 }
+    end
+
+    either = Either(something)
+    either += truth? Success('truth, only the truth') : Failure('lies, damn lies')
+
+Exceptions are wrapped into a Failure:
+
+    Either(true).
+      bind -> { fail 'get me out of here' }                    # return a Failure(RuntimeError)
+
+Another example:
+
+    Success(params).
+      bind ->(params)   { Either(params.fetch(:path)) }
+      bind ->(path)     { load_stuff(params) }
+
+
+## References
 
  * [Wikipedia Monad](See also http://en.wikipedia.org/wiki/Monad)
+ * [Learn You a Haskell - for a few monads more](http://learnyouahaskell.com/for-a-few-monads-more)
  * [Monad equivalend in Ruby](http://stackoverflow.com/questions/2709361/monad-equivalent-in-ruby)
  * [Option Type ](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
  * [NullObject and Falsiness by @avdi](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
