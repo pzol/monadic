@@ -112,7 +112,7 @@ Assume you need several calls to construct some object in order to be useful, af
 
 The `Either()` wrapper will treat `nil`, `false` or `empty?` as a `Failure` and all others as `Success`.
 
-    result = parse_and_validate_params(params).
+    result = parse_and_validate_params(params).                 # must return a Success or Failure inside
                 bind ->(user_id) { User.find(user_id) }.        # if #find returns null it will become a Failure
                 bind ->(user)    { authorized?(user); user }.   # if authorized? raises an Exception, it will be a Failure 
                 bind ->(user)    { UserDecorator(user) }
@@ -154,8 +154,8 @@ Exceptions are wrapped into a Failure:
 Another example:
 
     Success(params).
-      bind ->(params)   { Either(params.fetch(:path)) }
-      bind ->(path)     { load_stuff(params) }
+      bind ->(params)   { Either(params.fetch(:path)) }        # fails if params does not contain :path
+      bind ->(path)     { load_stuff(params)          }        # 
 
 
 ## References
