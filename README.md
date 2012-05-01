@@ -1,12 +1,12 @@
 # Monadic
 
-helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in Scala to my ruby projects (hence I will be using more Scala like constructs than Haskell).
+helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in [Scala](http://www.scala-lang.org/) to my ruby projects (hence I will be using more [Scala](http://www.scala-lang.org/) like constructs than Haskell).
 
 My motivation to create this gem was that I often work with nested Hashes and need to reach deeply inside of them so my code is sprinkled with things like some_hash.fetch(:one, {}).fetch(:two, {}).fetch(:three, "unknown"). 
 
 We have the following monadics:
 
-- Option (Maybe in Haskell) - Scala like with a rubyesque flavour
+- Option (Maybe in Haskell) - [Scala](http://www.scala-lang.org/) like with a rubyesque flavour
 - Either - more Haskell like
 
 What's the point of using monads in ruby? To me it started with having a safe way to deal with nil objects and other exceptions.
