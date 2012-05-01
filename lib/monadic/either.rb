@@ -33,8 +33,8 @@ module Either
       Failure(ex)      
     end
   end
-  alias :>=     :bind
-  alias :+      :bind
+  alias :>=  :bind
+  alias :+   :bind
 
   def to_s
     "#{self.class.name}(#{@value.nil? ? 'nil' : @value.to_s})"
