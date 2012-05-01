@@ -159,5 +159,36 @@ describe 'Either' do
       bind -> { Success(2) }
     end.should == Success(2)
 
+    Either.chain do 
+      bind ->    { Success(1)     }
+      bind ->(p) { Success(p + 1) }
+    end.should == Success(2)
+
+    Either.chain do
+      bind { Success(1) }
+    end.should == Success(1)
+  end
+
+  it 'README example' do
+    params = { :path => 'foo' }
+    def load_file(path); 
+      fail "invalid path" unless path
+      Success("bar"); 
+    end
+    def process_content(content); content.start_with?('b') ? Success(content.upcase) : Failure('invalid content'); end
+
+    either = Either(true).
+              bind {          params.fetch(:path)      }.
+              bind {|path|    load_file(path)          }.
+              bind {|content| process_content(content) }
+    either.should be_a_success
+    either.fetch.should == 'BAR'
+
+    either = Either(true).
+              bind {          {}.fetch(:path)          }.
+              bind {|path|    load_file(path)          }.
+              bind {|content| process_content(content) }
+    either.should be_a_failure
+    KeyError.should === either.fetch
   end
 end

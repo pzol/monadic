@@ -29,7 +29,7 @@ module Either
                  else (proc || block).call(@value) 
                end
       result ||= Failure(nil)
-      fail_unless_either(result)
+      result = Either(result) unless result.is_a? Either
       result    
     rescue Exception => ex
       Failure(ex)      
@@ -48,10 +48,6 @@ module Either
     return other.fetch == @value
   end
 
-  private
-  def fail_unless_either(result)
-    raise NoEitherError, "Result must return Success or Failure, got #{result.inspect}" unless result.is_a? Either
-  end
 end
 
 class Either::Chain
@@ -66,8 +62,8 @@ class Either::Chain
     end
   end
 
-  def bind(proc)
-    @chain << proc
+  def bind(proc=nil, &block)
+    @chain << (proc || block)
   end
   alias :chain :bind
 
