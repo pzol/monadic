@@ -62,7 +62,7 @@ describe 'Either' do
 
   it 'works' do
     either = Either(true).
-              chain -> { User.find(-1) }
+              bind -> { User.find(-1) }
     either.failure?.should be_true
     RuntimeError.should === either.fetch
   end

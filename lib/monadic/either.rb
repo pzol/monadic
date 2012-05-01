@@ -35,7 +35,6 @@ module Either
   end
   alias :>=     :bind
   alias :+      :bind
-  alias :chain  :bind
 
   def to_s
     "#{self.class.name}(#{@value.nil? ? 'nil' : @value.to_s})"
