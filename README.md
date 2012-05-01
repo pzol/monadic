@@ -12,6 +12,10 @@ We have the following monadics:
 What's the point of using monads in ruby? To me it started with having a safe way to deal with nil objects and other exceptions.
 Thus you contain the erroneous behaviour within a monad - an indivisible, impenetrable unit.
 
+Monad purists might complain that there is no unit method to get the zero monad, I didn't include them, as I didn't find this idiomatic to the ruby language. I prefer to focus on the pragmatic uses of monads. If you want to learn moar about monads, see the references section at the bottom.  
+
+A monad is most effectively described as a computation that eventually returns a value. -- Wolfgang De Meuter
+
 ## Usage
 
 ### Option
@@ -184,6 +188,7 @@ Storing intermediate results in instance variables is possible, although it is n
  * [Monads on the Cheap](http://osteele.com/archives/2007/12/cheap-monads)
  * [Rumonade](https://github.com/ms-ati/rumonade)
  * [Monads for functional programming](http://homepages.inf.ed.ac.uk/wadler/papers/marktoberdorf/baastad.pdf)
+ * [Monads as a theoretical foundation for AOP](http://soft.vub.ac.be/Publications/1997/vub-prog-tr-97-10.pdf)
 
 ## Installation
 
