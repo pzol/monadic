@@ -191,4 +191,15 @@ describe 'Either' do
     either.should be_a_failure
     KeyError.should === either.fetch
   end
+
+  it 'instance variables' do
+    result = Either.chain do
+      bind { @map = { one: 1, two: 2 } }
+      bind { Success(100) }
+      bind { @map.fetch(:one) }
+      bind { |p| Success(p + 100) }
+    end
+
+    result.should == Success(101)
+  end
 end

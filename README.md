@@ -105,12 +105,13 @@ Slug example
 
 ### Either
 Its main purpose here to handle errors gracefully, by chaining multiple calls in a functional way and stop evaluating them as soon as the first fails.
-Assume you need several calls to construct some object in order to be useful, after each you need to check for success. Also you want to catch exceptions and not let them bubble upwards.
+Assume you need several calls to construct some object in order to be useful, after each you need to check for success. Also you want to catch exceptions and not let them bubble upwards.  
+What is specific to this implementation is that exceptions are caught within the execution blocks. This way I have all error conditions wrapped in one place.
 
 `Success` represents a successfull execution of an operation (Right in Scala, Haskell).  
 `Failure` represents a failure to execute an operation (Left in Scala, Haskell).  
 
-The `Either()` wrapper will treat `nil`, `false` or `empty?` as a `Failure` and all others as `Success`.
+The `Either()` wrapper will treat all falsey values `nil`, `false` or `empty?` as a `Failure` and all others as `Success`. If that does not suit you, use `Success` or `Failure` only.
 
     result = parse_and_validate_params(params).                 # must return a Success or Failure inside
                 bind ->(user_id) { User.find(user_id) }.        # if #find returns null it will become a Failure
@@ -157,6 +158,15 @@ Another example:
       bind ->(params)   { Either(params.fetch(:path)) }        # fails if params does not contain :path
       bind ->(path)     { load_stuff(params)          }        # 
 
+Storing intermediate results in instance variables is possible, although it is not very elegant:
+
+    result = Either.chain do
+      bind { @map = { one: 1, two: 2 } }
+      bind { @map.fetch(:one) }
+      bind { |p| Success(p + 100) }
+    end
+
+    result == Success(101)
 
 ## References
 
