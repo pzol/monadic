@@ -176,7 +176,7 @@ Storing intermediate results in instance variables is possible, although it is n
 
  * [Wikipedia Monad](See also http://en.wikipedia.org/wiki/Monad)
  * [Learn You a Haskell - for a few monads more](http://learnyouahaskell.com/for-a-few-monads-more)
- * [Monad equivalend in Ruby](http://stackoverflow.com/questions/2709361/monad-equivalent-in-ruby)
+ * [Monad equivalent in Ruby](http://stackoverflow.com/questions/2709361/monad-equivalent-in-ruby)
  * [Option Type ](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
  * [NullObject and Falsiness by @avdi](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
  * [andand](https://github.com/raganwald/andand/blob/master/README.textile)
@@ -186,7 +186,7 @@ Storing intermediate results in instance variables is possible, although it is n
  * [Monads in Ruby with nice syntax](http://www.valuedlessons.com/2008/01/monads-in-ruby-with-nice-syntax.html)
  * [Maybe in Ruby](https://github.com/bhb/maybe)
  * [Monads on the Cheap](http://osteele.com/archives/2007/12/cheap-monads)
- * [Rumonade](https://github.com/ms-ati/rumonade)
+ * [Rumonade - another excellent (more scala-like) monad implementation](https://github.com/ms-ati/rumonade)
  * [Monads for functional programming](http://homepages.inf.ed.ac.uk/wadler/papers/marktoberdorf/baastad.pdf)
  * [Monads as a theoretical foundation for AOP](http://soft.vub.ac.be/Publications/1997/vub-prog-tr-97-10.pdf)
 
