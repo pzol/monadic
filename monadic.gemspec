@@ -4,7 +4,7 @@ require File.expand_path('../lib/monadic/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Piotr Zolnierek"]
   gem.email         = ["pz@anixe.pl"]
-  gem.description   = %q{brings some functional goodness to ruby}
+  gem.description   = %q{brings some functional goodness to ruby by giving you some monads}
   gem.summary       = %q{see README}
   gem.homepage      = "http://github.com/pzol/monadic"
 
