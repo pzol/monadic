@@ -34,6 +34,7 @@ describe 'Either' do
   end
 
   class User
+    attr :age, :gender, :sobriety
     def self.find(id)
       case id 
       when -1; raise 'invalid user id'
