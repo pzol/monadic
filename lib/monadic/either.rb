@@ -62,7 +62,6 @@ class Either::Chain
   def bind(proc=nil, &block)
     @chain << (proc || block)
   end
-  alias :chain :bind
 
 end
 
