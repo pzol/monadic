@@ -1,19 +1,16 @@
-require 'singleton'
 # Represents optional values. Instances of Option are either an instance of Some or the object None.
-#
-
-# Helper function which returns Some or None respectively, depending on their value
-# I find this moar simplistic in ruby than the traditional #bind and #unit
-def Option(value)
-  return Monadic::None if value.nil? || (value.respond_to?(:empty?) && value.empty?)
-  return Monadic::Some.new(value)
-end
-alias :Some  :Option
-alias :Maybe :Option
-
 
 # Represents the Option if there is some value available
 module Monadic
+  # Helper function which returns Some or None respectively, depending on their value
+  # I find this moar simplistic in ruby than the traditional #bind and #unit
+  def Option(value)
+    return Monadic::None if value.nil? || (value.respond_to?(:empty?) && value.empty?)
+    return Monadic::Some.new(value)
+  end
+  alias :Some  :Option
+  alias :Maybe :Option
+
   class Some
     def initialize(value)
       @value = value
