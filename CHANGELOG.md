@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.0.5 
+
+Removed the `#chain` method alias for bind in `Either`.
+
+Moar examples with instance variables in an `Either.chain`.
+
+Add monadic `Validation`, which is a special application of the Either Monad (and a List Monad) e.g.
+
+    Validation() do
+      check { check_age.(person.age);          }
+      check { check_sobriety.(person.sobriety) }
+    end
+
+It returns a Success([]) with an empty list, or a Failure([..]) with a list of all Failures.
+
 ## v0.0.4
 
 To be more idiomatic rubyuesque, rename `#value` to `#fetch`, which throws now an `NoValueError`.  
