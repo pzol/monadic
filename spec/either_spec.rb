@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Either' do
+describe Monadic::Either do
   it 'Success and Failure should be kind of Either' do
     Success.new(0).should be_kind_of(Either)
     Failure.new(0).should be_kind_of(Either)

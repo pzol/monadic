@@ -9,5 +9,3 @@ module Monadic
 end
 
 include Monadic
-None = Monadic::None
-Some = Monadic::Some

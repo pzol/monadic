@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Validation' do
+describe Monadic::Validation do
   Person = Struct.new(:age, :gender, :sobriety, :name)
 
   it 'a projection of Success and Failure' do
