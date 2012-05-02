@@ -2,6 +2,9 @@ def Validation(&block)
   Validation.new.call(&block)
 end
 
+# Conducts several function calls which do checks, of which each must return Success or Failure
+# and returns a list of all failures. 
+# Validation is not a monad, but an deemed an applicative functor
 class Validation
   def initialize
     @result = Success([])

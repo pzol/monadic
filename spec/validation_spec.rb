@@ -23,9 +23,14 @@ describe 'Validation' do
         end 
       }
 
+      check_gender = ->(gender) {
+        gender == :male || gender == :female ? Success(gender) : Failure("Invalid gender #{gender}")
+      }
+        
       Validation() do
         check { check_age.(person.age);          }
         check { check_sobriety.(person.sobriety) }
+        check { check_gender.(person.gender)     }
       end
     end
 

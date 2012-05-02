@@ -4,10 +4,11 @@ helps dealing with exceptional situations, it comes from the sphere of functiona
 
 My motivation to create this gem was that I often work with nested Hashes and need to reach deeply inside of them so my code is sprinkled with things like some_hash.fetch(:one, {}).fetch(:two, {}).fetch(:three, "unknown"). 
 
-We have the following monadics:
+We have the following monadics (monads, functors, applicatives and variations):
 
 - Option (Maybe in Haskell) - [Scala](http://www.scala-lang.org/) like with a rubyesque flavour
 - Either - more Haskell like
+- Validation 
 
 What's the point of using monads in ruby? To me it started with having a safe way to deal with nil objects and other exceptions.
 Thus you contain the erroneous behaviour within a monad - an indivisible, impenetrable unit.
@@ -172,6 +173,44 @@ Storing intermediate results in instance variables is possible, although it is n
 
     result == Success(101)
 
+
+### Validation 
+The Validation applicative functor, takes a list of checks within a block. Each check must return either Success of Failure.  
+If Successful, it will return Success, if not a Failure monad, containing a list of failures.  
+Within the Failure() provide the reason why the check failed.
+
+Example:
+
+    def validate(person)
+      check_age = ->(age_expr) {
+        age = age_expr.to_i
+        case 
+        when age <=  0; Failure('Age must be > 0')
+        when age > 130; Failure('Age must be < 130')
+        else Success(age)
+        end
+      }
+
+      check_sobriety = ->(sobriety) {
+        case sobriety
+        when :sober, :tipsy; Success(sobriety)
+        when :drunk        ; Failure('No drunks allowed')
+        else Failure("Sobriety state '#{sobriety}' is not allowed")
+        end 
+      }
+
+      check_gender = ->(gender) {
+        gender == :male || gender == :female ? Success(gender) : Failure("Invalid gender #{gender}")
+      }
+        
+      Validation() do
+        check { check_age.(person.age);          }
+        check { check_sobriety.(person.sobriety) }
+        check { check_gender.(person.gender)     }
+      end
+    end
+
+
 ## References
 
  * [Wikipedia Monad](See also http://en.wikipedia.org/wiki/Monad)
@@ -189,6 +228,7 @@ Storing intermediate results in instance variables is possible, although it is n
  * [Rumonade - another excellent (more scala-like) monad implementation](https://github.com/ms-ati/rumonade)
  * [Monads for functional programming](http://homepages.inf.ed.ac.uk/wadler/papers/marktoberdorf/baastad.pdf)
  * [Monads as a theoretical foundation for AOP](http://soft.vub.ac.be/Publications/1997/vub-prog-tr-97-10.pdf)
+ * [What is an applicative functor?](http://applicative-errors-scala.googlecode.com/svn/artifacts/0.6/html/index.html)
 
 ## Installation
 

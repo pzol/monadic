@@ -6,7 +6,7 @@ Removed the `#chain` method alias for bind in `Either`.
 
 Moar examples with instance variables in an `Either.chain`.
 
-Add monadic `Validation`, which is a special application of the Either Monad (and a List Monad) e.g.
+Add monadic `Validation`, which is a special application (an applicative functor) of the Either Monad e.g.
 
     Validation() do
       check { check_age.(person.age);          }
