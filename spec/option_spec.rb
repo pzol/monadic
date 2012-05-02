@@ -26,7 +26,7 @@ describe 'Option' do
 
   it 'None is always empty' do
     None.empty?.should be_true
-    Maybe(nil).empty?.should be_true
+    Option(nil).empty?.should be_true
   end
 
   it '[] as value always returns None()' do
@@ -107,8 +107,8 @@ describe 'Option' do
   end
 
   it 'diving into hashes' do
-    Maybe({})['a']['b']['c'].should == None
-    Maybe({a: 1})[:a]._.should == 1
+    Option({})['a']['b']['c'].should == None
+    Option({a: 1})[:a]._.should == 1
   end
 
   it 'should support Rumonades example' do

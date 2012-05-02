@@ -9,7 +9,7 @@ module Monadic
     return Monadic::Some.new(value)
   end
   alias :Some  :Option
-  alias :Maybe :Option
+  # alias :Maybe :Option
 
   class Some
     def initialize(value)
