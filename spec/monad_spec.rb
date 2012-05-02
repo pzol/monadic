@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Monad do
+describe Monadic::Monad do
   it '1st monadic law: left-identity' do
-    f = ->(value) { Monad.new(value + 1) }
+    f = ->(value) { Monad.unit(value + 1) }
     Monad::unit(1).bind do |value|
       f.(value)
     end.should == f.(1)
