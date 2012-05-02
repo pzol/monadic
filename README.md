@@ -72,13 +72,6 @@ Falsey values (kind-of) examples:
     user = Option(User.find(123))
     user.name._
 
-    user.fetch('You are not logged in') { |user| "You are logged in as #{user.name}" }.should == 'You are logged in as foo'
-
-    if user != nil
-      "You are logged in as foo"
-    else
-      "You are not logged in"
-
     user.subscribed?              # always true
     user.subscribed?.truly?       # true if subscribed is true
     user.subscribed?.fetch(false) # same as above
