@@ -1,37 +1,9 @@
 require 'spec_helper'
 
 describe Monadic::Maybe do
-  it '1st monadic law: left-identity' do
-    f = ->(value) { Just.unit(value + 1) }
-    Just::unit(1).bind do |value|
-      f.(value)
-    end.should == f.(1)
+  it_behaves_like 'a Monad' do
+    let(:monad) { Maybe }
   end
-
-  it '2nd monadic law: right-identy - unit and bind do not change the value' do
-    Just.unit(1).bind do |value|
-      Just.unit(value)
-    end.should == Just.unit(1)
-  end
-
-  it '3rd monadic law: associativity' do 
-    f = ->(value) { Just.unit(value + 1)   }
-    g = ->(value) { Just.unit(value + 100) }    
-
-    id1 = Just.unit(1).bind do |a|
-      f.(a)
-    end.bind do |b| 
-      g.(b) 
-    end
-
-    id2 = Just.unit(1).bind do |a|
-      f.(a).bind do |b|
-        g.(b)
-      end
-    end
-
-    id1.should == id2
-  end 
 
   it 'Maybe cannot be created using #new, use #unit instead' do
     expect { Maybe.new(1) }.to raise_error NoMethodError
@@ -41,32 +13,44 @@ describe Monadic::Maybe do
      Maybe(nil).a.b.c.should == Nothing
   end
 
-  it 'Nothing stays Nothing' do
-    expect { Maybe(nil).fetch }.to raise_error Monadic::NoValueError
-    Maybe(nil).empty?.should be_true
-  end  
+  describe Monadic::Nothing do
+    it_behaves_like 'a Monad' do
+      let(:monad) { Nothing }
+    end
 
-  it 'Just stays Just' do
-    Maybe('foo').should be_kind_of(Just) 
-    Maybe('foo').empty?.should be_false
+    it 'Nothing stays Nothing' do
+      expect { Maybe(nil).fetch }.to raise_error Monadic::NoValueError
+      Maybe(nil).empty?.should be_true
+    end  
+
+    it 'Nothing#to_s is "Nothing"' do
+      option = Maybe(nil)
+      "#{option}".should   == "Nothing"
+    end
+
+    it 'Nothing is always empty' do
+      Nothing.empty?.should be_true
+      Maybe(nil).empty?.should be_true
+    end
+
+    it '[] as value always returns Nothing()' do
+      Maybe([]).a.should == Nothing
+    end
   end
 
-  it 'Just#to_s is "Just(value)"' do
-    Just.unit(123).to_s.should == "Just(123)"
-  end
+  describe Monadic::Just do
+    it_behaves_like 'a Monad' do
+      let(:monad) { Just }
+    end
 
-  it 'Nothing#to_s is "Nothing"' do
-    option = Maybe(nil)
-    "#{option}".should   == "Nothing"
-  end
+    it 'Just stays Just' do
+      Maybe('foo').should be_kind_of(Just) 
+      Maybe('foo').empty?.should be_false
+    end
 
-  it 'Nothing is always empty' do
-    Nothing.empty?.should be_true
-    Maybe(nil).empty?.should be_true
-  end
-
-  it '[] as value always returns Nothing()' do
-    Maybe([]).a.should == Nothing
+    it 'Just#to_s is "Just(value)"' do
+      Just.unit(123).to_s.should == "Just(123)"
+    end
   end
 
   it 'calling methods on Maybe always returns an Maybe with the transformed value' do
@@ -93,25 +77,15 @@ describe Monadic::Maybe do
     Maybe(nil).should_not be_false
   end
 
-
-  class User 
-    attr_reader :name
-    def initialize(name)
-      @name = name
-    end
-    def subscribed?
-      true
-    end
-  end
-
   it 'handles (kind-of) falsey values' do
-    user = Maybe(User.new('foo'))
-    user.subscribed?.fetch(false).should be_true
-    user.subscribed?.truly?.should be_true
+    FalseyUser = Struct.new(:name, :subscribed)
+    user = Maybe(FalseyUser.new(name = 'foo', subscribed = true))
+    user.subscribed.fetch(false).should be_true
+    user.subscribed.truly?.should be_true
 
     user = Maybe(nil)
-    user.subscribed?.fetch(false).should be_false
-    user.subscribed?.truly?.should be_false
+    user.subscribed.fetch(false).should be_false
+    user.subscribed.truly?.should be_false
   end
 
   it 'allows to use map' do
