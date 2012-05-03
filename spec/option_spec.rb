@@ -52,11 +52,6 @@ describe 'Option' do
     Option('FOO').downcase._('bar').should == 'foo'
   end
 
-  it 'returns the value applied to a block if it is Some' do
-    Option('foo').fetch('bar') { |val| "You are logged in as #{val}" }.should == 'You are logged in as foo'
-    Option(nil).fetch('You are not logged in') { |val| "You are logged in as #{val}" }.should == 'You are not logged in'
-  end
-
   it 'is never falsey' do
     Option('foo').should_not be_false
     Option(nil).should_not be_false
