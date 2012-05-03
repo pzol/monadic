@@ -74,7 +74,7 @@ describe 'Option' do
 
   it 'allows to use a block with fetch and _' do
     user = Option(User.new('foo'))
-    user.fetch('You are not logged in') { |user| "You are logged in as #{user.name}" }.should == 'You are logged in as foo'
+    user.fetch('You are not logged in') { |u| "You are logged in as #{u.name}" }.should == 'You are logged in as foo'
   end
 
   it 'handles (kind-of) falsey values' do
