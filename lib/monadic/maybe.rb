@@ -1,4 +1,5 @@
 module Monadic
+  # @api private helps treating `Maybe` like Either in Scala
   module ScalaStuff
     def map(proc = nil, &block)
       return Maybe(@value.map(&block)) if @value.is_a?(Enumerable)
@@ -20,6 +21,8 @@ module Monadic
       return Just.new(value)
     end
 
+    # Initialize is private, because it always would return an instance of Maybe, but Just or Nothing 
+    # are required (Maybe is abstract).
     def initialize(*args)
       raise NoMethodError, "private method `new' called for #{self.class.name}, use `unit' instead"
     end
