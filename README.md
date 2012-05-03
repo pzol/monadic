@@ -18,9 +18,9 @@ A monad is most effectively described as a computation that eventually returns a
 ## Usage
 
 ### Maybe
-Is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Option, stays in the Option'. 
+Is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Maybe, stays in the Maybe'. 
 
-    Option(User.find(123)).name._         # ._ is a shortcut for .fetch 
+    Maybe(User.find(123)).name._         # ._ is a shortcut for .fetch 
 
     # if you prefer the alias Maybe instead of option
     Maybe(User.find(123)).name._
@@ -76,7 +76,7 @@ Falsey values (kind-of) examples:
     user.subscribed?.fetch(false) # same as above
     user.subscribed?.or(false)    # same as above
 
-Remember! an Option is never false (in Ruby terms), if you want to know if it is false, call `#empty?` of `#truly?`
+Remember! a Maybe is never false (in Ruby terms), if you want to know if it is false, call `#empty?` of `#truly?`
 
 `#truly?` will return true or false, always.
 
