@@ -13,19 +13,25 @@ describe Monadic::Maybe do
      Maybe(nil).a.b.c.should == Nothing
   end
 
+  it 'on non-existant methods, returns Nothing' do
+    Maybe({}).a.b.c.should == Nothing
+  end
+
   describe Monadic::Nothing do
     it_behaves_like 'a Monad' do
       let(:monad) { Nothing }
     end
 
     it 'Nothing stays Nothing' do
-      expect { Maybe(nil).fetch }.to raise_error Monadic::NoValueError
+      Maybe(nil).fetch.should == Nothing
+      Maybe(nil)._.should == Nothing
       Maybe(nil).empty?.should be_true
     end  
 
     it 'Nothing#to_s is "Nothing"' do
       option = Maybe(nil)
       "#{option}".should   == "Nothing"
+      Nothing.to_s.should == "Nothing"
     end
 
     it 'Nothing is always empty' do
@@ -35,6 +41,11 @@ describe Monadic::Maybe do
 
     it '[] as value always returns Nothing()' do
       Maybe([]).a.should == Nothing
+    end
+
+    it 'is always empty and false' do
+      Nothing.empty?.should be_true
+      Nothing.truly?.should be_false
     end
   end
 
@@ -75,6 +86,9 @@ describe Monadic::Maybe do
   it 'is never falsey' do
     Maybe('foo').should_not be_false
     Maybe(nil).should_not be_false
+    Maybe(false).truly?.should be_false
+    Maybe(true).truly?.should be_true
+    Maybe(nil).truly?.should be_false
   end
 
   it 'handles (kind-of) falsey values' do

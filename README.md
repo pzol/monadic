@@ -17,7 +17,7 @@ A monad is most effectively described as a computation that eventually returns a
 
 ## Usage
 
-### Option
+### Maybe
 Is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Option, stays in the Option'. 
 
     Option(User.find(123)).name._         # ._ is a shortcut for .fetch 
@@ -26,48 +26,49 @@ Is an optional type, which helps to handle error conditions gracefully. The one 
     Maybe(User.find(123)).name._
 
     # confidently diving into nested hashes
-    Maybe({})[:a][:b][:c]                   == None
-    Maybe({})[:a][:b][:c].fetch('unknown')  == None
+    Maybe({})[:a][:b][:c]                   == Nothing
+    Maybe({})[:a][:b][:c].fetch('unknown')  == "unknown"
     Maybe(a: 1)[:a]._                       == 1
 
 Basic usage examples:
 
     # handling nil (None serves as NullObject)
-    obj = nil
-    Option(obj).a.b.c            == None
+    Maybe(nil).a.b.c            == Nothing
 
-    # None stays None
-    Option(nil)._                == "None"
-    "#{Option(nil)}"             == "None"
-    Option(nil)._("unknown")     == "unknown"
-    Option(nil).empty?           == true
-    Option(nil).truly?           == false
+    # Nothing
+    Maybe(nil)._                == Nothing
+    "#{Maybe(nil)}"             == "Nothing"
+    Maybe(nil)._("unknown")     == "unknown"
+    Maybe(nil).empty?           == true
+    Maybe(nil).truly?           == false
 
-    # Some stays Some, unless you unbox it
-    Option('FOO').downcase       == Some('foo') 
-    Option('FOO').downcase.fetch == "foo"
-    Option('FOO').downcase._     == "foo"
-    Option('foo').empty?         == false
-    Option('foo').truly?         == true
+    # Just stays Just, unless you unbox it
+    Maybe('FOO').downcase       == Just('foo') 
+    Maybe('FOO').downcase.fetch == "foo"          # unboxing the value
+    Maybe('FOO').downcase._     == "foo"          
+    Maybe('foo').empty?         == false          # always non-empty
+    Maybe('foo').truly?         == true           # depends on the boxed value
+    Maybe(false).empty?         == false
+    Maybe(false).truly?         == false
 
 Map, select:
     
-    Option(123).map   { |value| User.find(value) } == Option(someUser)    # if user found
-    Option(0).map     { |value| User.find(value) } == None                # if user not found
-    Option([1,2]).map { |value| value.to_s }       == Option(["1", "2"])  # for all Enumerables
+    Maybe(123).map   { |value| User.find(value) } == Just(someUser)      # if user found
+    Maybe(0).map     { |value| User.find(value) } == Nothing             # if user not found
+    Maybe([1,2]).map { |value| value.to_s }       == Just(["1", "2"])    # for all Enumerables
 
-    Option('foo').select { |value| value.start_with?('f') } == Some('foo')
-    Option('bar').select { |value| value.start_with?('f') } == None
+    Maybe('foo').select { |value| value.start_with?('f') } == Just('foo')
+    Maybe('bar').select { |value| value.start_with?('f') } == Nothing
 
 Treat it like an array:
 
-    Option(123).to_a         == [123]
-    Option([123, 456]).to_a  == [123, 456]
-    Option(nil)              == []
+    Maybe(123).to_a          == [123]
+    Maybe([123, 456]).to_a   == [123, 456]
+    Maybe(nil).to_a          == []
 
 Falsey values (kind-of) examples:
 
-    user = Option(User.find(123))
+    user = Maybe(User.find(123))
     user.name._
 
     user.subscribed?              # always true
@@ -96,7 +97,7 @@ Slug example
 
     # do it with a default
     def slug(title)
-      Option(title).strip.downcase.tr_s('^[a-z0-9]', '-')._('unknown-title')
+      Maybe(title).strip.downcase.tr_s('^[a-z0-9]', '-')._('unknown-title')
     end
 
 ### Either
