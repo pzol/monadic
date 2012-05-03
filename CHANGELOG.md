@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.0.6
+**Contains Breaking Changes**
+
+Refactoring to use internal `Monad` class, from which all monads inherit.
+
+Reimplemented `Maybe` as inherited class from `Monad`. The old `Option` implementation has been removed, maybe does the same though, but the code is much cleaner and obeys the 3 monadic laws.
+
+Removed `Maybe#fetch` call with block`
+
+`Either` and `Validation` are now in the `Monadic` namespace.
+
+Added Travis-Ci integration, [![Build Status](https://secure.travis-ci.org/pzol/monadic.png?branch=master)](http://travis-ci.org/pzol/monadic)
+
+
 ## v0.0.5 
 
 Removed the `#chain` method alias for bind in `Either`.
