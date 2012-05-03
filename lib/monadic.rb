@@ -1,6 +1,5 @@
 require 'monadic/version'
 
-require 'monadic/jruby_fixes'
 require 'monadic/errors'
 require 'monadic/monad'
 require 'monadic/option'
