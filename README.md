@@ -1,20 +1,18 @@
 # Monadic
 
-helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in [Scala](http://www.scala-lang.org/) to my ruby projects (hence I will be using more [Scala](http://www.scala-lang.org/) like constructs than Haskell).
+helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in [Scala](http://www.scala-lang.org/) and [Haskell](http://www.haskell.org/) to my ruby projects.
 
 My motivation to create this gem was that I often work with nested Hashes and need to reach deeply inside of them so my code is sprinkled with things like some_hash.fetch(:one, {}).fetch(:two, {}).fetch(:three, "unknown"). 
 
 We have the following monadics (monads, functors, applicatives and variations):
 
-- Option (Maybe in Haskell) - [Scala](http://www.scala-lang.org/) like with a rubyesque flavour
-- Either - more Haskell like
-- Validation 
+- Maybe  - use if you have __one__  exception
+- Either - use if you have __many__ exceptions, and one call depends on the previous
+- Validation - use if you have __many__ independent calls (usually to validate an object)
 
 What's the point of using monads in ruby? To me it started with having a safe way to deal with nil objects and other exceptions.
-Thus you contain the erroneous behaviour within a monad - an indivisible, impenetrable unit.
-
-Monad purists might complain that there is no unit method to get the zero monad, I didn't include them, as I didn't find this idiomatic to the ruby language. I prefer to focus on the pragmatic uses of monads. If you want to learn moar about monads, see the references section at the bottom.  
-
+Thus you contain the erroneous behaviour within a monad - an indivisible, impenetrable unit. Functional programming considers _throwing_ exceptions to be a side-effect, instead we _propagate_ exceptions, i.e. return them as a result of a function call.
+ 
 A monad is most effectively described as a computation that eventually returns a value. -- Wolfgang De Meuter
 
 ## Usage
@@ -236,6 +234,11 @@ And then execute:
 Or install it yourself as:
 
     $ gem install monadic
+
+## Compatibility
+Monadic is tested under ruby MRI 1.9.2, 1.9.3, jruby 1.9 mode, rbx 1.9 mode.
+
+See the build status [![Build Status](https://secure.travis-ci.org/pzol/monadic.png?branch=master)](http://travis-ci.org/pzol/monadic) 
 
 ## Contributing
 
