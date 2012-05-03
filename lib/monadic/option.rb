@@ -30,8 +30,7 @@ module Monadic
       @value == true
     end
 
-    def fetch(default=None, &block)
-      return block.call(@value)  if block_given?
+    def fetch(default=None)
       return @value
     end
     alias :or :fetch
