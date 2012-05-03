@@ -190,7 +190,7 @@ describe Monadic::Either do
               bind {|path|    load_file(path)          }.
               bind {|content| process_content(content) }
     either.should be_a_failure
-    KeyError.should === either.fetch
+    either.fetch.should be_a KeyError
   end
 
   it 'instance variables' do
