@@ -1,14 +1,34 @@
 require 'spec_helper'
 
 describe Monadic::Either do
+  it 'Either cannot be created using #new, use #unit instead' do
+    expect { Either.new(1) }.to raise_error NoMethodError
+  end
+
+  it 'Success.new and Success.unit and Success() return the same' do
+    Success(1).should == Success.unit(1)
+    Success.new(1).should == Success.unit(1)
+
+    Success(nil).should == Success.unit(nil)
+    Success.new(nil).should == Success.unit(nil)
+  end
+
+  it 'Failure.new and Failure.unit and Failure() return the same' do
+    Failure(1).should == Failure.unit(1)
+    Failure.new(1).should == Failure.unit(1)
+    
+    Failure(nil).should == Failure.unit(nil)
+    Failure.new(nil).should == Failure.unit(nil)
+  end
+
   it 'Success and Failure should be kind of Either' do
-    Success.new(0).should be_kind_of(Either)
-    Failure.new(0).should be_kind_of(Either)
+    Success.unit(0).should be_kind_of(Either)
+    Failure.unit(0).should be_kind_of(Either)
   end
 
   it '#to_s works' do
-    Success.new("it worked!").to_s.should == "Success(it worked!)"
-    Failure.new(nil).to_s.should == "Failure(nil)"
+    Success.unit("it worked!").to_s.should == "Success(it worked!)"
+    Failure.unit(nil).to_s.should == "Failure(nil)"
   end
 
   it 'allows to verify equality' do

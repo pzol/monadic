@@ -1,8 +1,19 @@
 module Monadic
-  # Chain various method calls
-  module Either
+  # @abstract Chains function calls and stops executing if one of them fails.
+  class Either < Monad
     def self.chain(initial=nil, &block)
       Either::Chain.new(&block).call(initial)
+    end
+
+    def self.unit(value)
+      return Failure.new(value) if value.nil? || (value.respond_to?(:empty?) && value.empty?) || !value
+      return Success.new(value)
+    end
+
+    # Initialize is private, because it always would return an instance of Either, but Success or Failure 
+    # are required (Either is abstract).
+    def initialize(value)
+      raise NoMethodError, "private method `new' called for #{self.class.name}, use `unit' instead"
     end
 
     def success?
@@ -36,21 +47,6 @@ module Monadic
     end
     alias :>=  :bind
     alias :+   :bind
-
-    def to_s
-      "#{pretty_class_name}(#{@value.nil? ? 'nil' : @value.to_s})"
-    end
-
-    def ==(other)
-      return false unless self.class === other
-      return other.fetch == @value
-    end
-
-    private
-    def pretty_class_name
-      self.class.name.split('::')[-1]
-    end
-
   end
 
   class Either::Chain
@@ -68,33 +64,45 @@ module Monadic
     def bind(proc=nil, &block)
       @chain << (proc || block)
     end
-
   end
 
-  class Success 
-    include Either
-    def initialize(value)
-      @value = value
+  # @private instance and class methods for Success and Failure
+  module SuccessFailure
+    module ClassMethods
+      def unit(value)
+        new(value)
+      end
+    end
+    module InstanceMethods
+      def initialize(value)
+        @value = join(value)
+      end 
     end
   end
 
-  class Failure 
-    include Either
-    def initialize(value)
-      @value = value
-    end
+  class Success < Either
+    extend  SuccessFailure::ClassMethods
+    include SuccessFailure::InstanceMethods
   end
 
-  def Success(value)
-    Success.new(value)
+  class Failure < Either
+    extend  SuccessFailure::ClassMethods
+    include SuccessFailure::InstanceMethods
   end
 
   def Failure(value)
     Failure.new(value)
   end
 
+  # Factory method 
+  # @return [Success]
+  def Success(value)
+    Success.new(value)
+  end
+
+  # Magic factory
+  # @return [Success, Failure] depending whether +value+ is falsey
   def Either(value)
-    return Failure(value) if value.nil? || (value.respond_to?(:empty?) && value.empty?) || !value
-    return Success(value)
+    Either.unit(value)
   end
 end
