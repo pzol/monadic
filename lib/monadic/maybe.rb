@@ -57,8 +57,8 @@ module Monadic
   class Nothing < Maybe
     class << self
       def fetch(default=nil)
-        raise NoValueError, "Nothing has no value" if default.nil?
-        default
+        return self if default.nil?
+        return default
       end
       alias :_ :fetch
 
