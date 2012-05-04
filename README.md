@@ -1,4 +1,5 @@
 # Monadic
+[![Build Status](https://secure.travis-ci.org/pzol/monadic.png?branch=master)](http://travis-ci.org/pzol/monadic) 
 
 helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in [Scala](http://www.scala-lang.org/) and [Haskell](http://www.haskell.org/) to my ruby projects.
 
@@ -239,7 +240,6 @@ Or install it yourself as:
 ## Compatibility
 Monadic is tested under ruby MRI 1.9.2, 1.9.3, jruby 1.9 mode, rbx 1.9 mode.
 
-See the build status [![Build Status](https://secure.travis-ci.org/pzol/monadic.png?branch=master)](http://travis-ci.org/pzol/monadic) 
 
 ## Contributing
 
