@@ -23,9 +23,7 @@ module Monadic
 
     # Initialize is private, because it always would return an instance of Maybe, but Just or Nothing 
     # are required (Maybe is abstract).
-    def initialize(*args)
-      raise NoMethodError, "private method `new' called for #{self.class.name}, use `unit' instead"
-    end
+    private_class_method :new
 
     def empty?
       @value.respond_to?(:empty?) && @value.empty?
@@ -43,9 +41,7 @@ module Monadic
   end
 
   class Just < Maybe
-    def initialize(value)
-      @value = join(value)
-    end
+    public_class_method :new
 
     def fetch(default=nil)
       @value
