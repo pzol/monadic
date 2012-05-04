@@ -12,9 +12,7 @@ module Monadic
 
     # Initialize is private, because it always would return an instance of Either, but Success or Failure 
     # are required (Either is abstract).
-    def initialize(value)
-      raise NoMethodError, "private method `new' called for #{self.class.name}, use `unit' instead"
-    end
+    private_class_method :new
 
     def success?
       is_a? Success
@@ -68,6 +66,13 @@ module Monadic
 
   # @private instance and class methods for Success and Failure
   module SuccessFailure
+    def self.included(base)
+      base.class_eval do
+        public_class_method :new
+        extend  ClassMethods
+        include InstanceMethods
+      end
+    end
     module ClassMethods
       def unit(value)
         new(value)
@@ -81,13 +86,11 @@ module Monadic
   end
 
   class Success < Either
-    extend  SuccessFailure::ClassMethods
-    include SuccessFailure::InstanceMethods
+    include SuccessFailure
   end
 
   class Failure < Either
-    extend  SuccessFailure::ClassMethods
-    include SuccessFailure::InstanceMethods
+    include SuccessFailure
   end
 
   def Failure(value)
