@@ -103,6 +103,17 @@ Slug example
       Maybe(title).strip.downcase.tr_s('^[a-z0-9]', '-')._('unknown-title')
     end
 
+### Object#_?
+Works similar to the Elvis operator _? - ruby does not allow ?: as operator and use it like the excellent [andand](https://github.com/raganwald/andand)
+
+    require 'monadic/core_ext/object'   # this will import _? into the global Object
+    nil._?           == Nothing
+    "foo"._?         == 'foo'
+    {}._?.a.b        == Nothing
+    {}._?[:foo]      == Nothing
+
+In fact this is a shortcut notation for `Maybe(obj)`
+
 ### Either
 Its main purpose here to handle errors gracefully, by chaining multiple calls in a functional way and stop evaluating them as soon as the first fails.
 Assume you need several calls to construct some object in order to be useful, after each you need to check for success. Also you want to catch exceptions and not let them bubble upwards.  
