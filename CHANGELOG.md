@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.0.7 
+
+Implements the #map method for all Monads. It works on value types and on Enumerable collections.  
+Provide a proc or a block and it will return a transformed value or collection boxed back in the monad.
+
+    Monad.unit('FOO').map(&:capitalize).map {|v| "Hello #{v}"}    == Monad(Hello Foo)
+
+Add the Elvis operator _? - ruby does not allow ?: as operator and use it like the excellent [andand](https://github.com/raganwald/andand)
+
+    nil._?           == Nothing
+    "foo"._?         == 'foo'
+    {}._?.a.b        == Nothing
+    {}._?[:foo]      == Nothing
+
 ## v0.0.6
 **Contains Breaking Changes**
 
