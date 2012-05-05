@@ -20,11 +20,22 @@ module Monadic
     end
 
     # Unwraps the the Monad
+    # @return the value contained in the monad
     def fetch
       @value
     end
     alias :_ :fetch
 
+    # A functor applying the proc or block on the boxed `value` and returning the Monad with the transformed values.
+    # If the underlying `value` is an `Enumerable`, the map is applied on each element of the collection.
+    # (A -> B) -> M[A] -> M[B]
+    def map(proc = nil, &block)
+      func = (proc || block)
+      return self.class.unit(@value.map {|v| func.call(v) }) if @value.is_a?(::Enumerable)
+      return self.class.unit(func.call(@value))
+    end
+
+    # Return the string representation of the Monad
     def to_s
       pretty_class_name = self.class.name.split('::')[-1]
       "#{pretty_class_name}(#{@value.nil? ? 'nil' : @value.to_s})"

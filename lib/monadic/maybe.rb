@@ -1,21 +1,5 @@
 module Monadic
-  # @api private helps treating `Maybe` like Either in Scala
-  module ScalaStuff
-    def map(proc = nil, &block)
-      return Maybe(@value.map(&block)) if @value.is_a?(::Enumerable)
-      return Maybe((proc || block).call(@value))
-    end
-
-    def select(proc = nil, &block)
-      return Maybe(@value.select(&block)) if @value.is_a?(::Enumerable)
-      return Nothing unless (proc || block).call(@value)
-      return self
-    end
-  end
-
   class Maybe < Monad
-    include ScalaStuff
-
     def self.unit(value)
       return Nothing if value.nil? || (value.respond_to?(:empty?) && value.empty?)
       return Just.new(value)
@@ -34,6 +18,12 @@ module Monadic
       return [@value]
     end
     alias :to_a :to_ary
+
+    def select(proc = nil, &block)
+      return Maybe(@value.select(&block)) if @value.is_a?(::Enumerable)
+      return Nothing unless (proc || block).call(@value)
+      return self
+    end
 
     def truly?
       @value == true
