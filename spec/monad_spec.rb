@@ -8,6 +8,10 @@ describe Monadic::Monad do
   it '#to_s shows the monad name and its value' do
     Monad.unit(1).to_s.should == 'Monad(1)'
     Monad.unit(nil).to_s.should == 'Monad(nil)'
+    Monad.unit([1, 2]).map(&:to_s).should == Monad.unit(["1", "2"])
+
+    # can be done also
+    Monad.unit([1, 2]).bind {|v| Monad.unit(v.map(&:to_s)) }.should == Monad.unit(["1", "2"])
   end
 
   describe '#map' do
