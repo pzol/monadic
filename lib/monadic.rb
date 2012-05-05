@@ -6,7 +6,4 @@ require 'monadic/maybe'
 require 'monadic/either'
 require 'monadic/validation'
 
-module Monadic
-end
-
 include Monadic
