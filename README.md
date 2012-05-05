@@ -18,30 +18,10 @@ A monad is most effectively described as a computation that eventually returns a
 
 ## Usage
 
-### Monad 
-All Monads inherit from this class. Standalone it is an Identity monad. Not useful on its own. It's methods are usable on all its descendants.
-
-__#map__ is used to map the inner value
-
-    Monad.unit('FOO').map(&:capitalize).map {|v| "Hello #{v}"}    == Monad(Hello Foo)
-    Monad.unit([1,2]).map {|v| v + 1}                             == Monad([2, 3])
-
-__#bind__ allows (priviledged) access to the boxed value. This is the traditional _no-magic_ `#bind` as found in Haskell, 
-You are responsible for re-wrapping the value into a Monad again.
-  
-    # due to the way it works, it will simply return the value, don't rely on this though, different Monads may
-    # implement bind differently (e.g. Maybe involves some _magic_)
-    Monad.unit('foo').bind(&:capitalize)                          == Foo
-
-    # proper use
-    Monad.unit('foo').bind {|v| Monad.unit(v.capitalize) }        == Monad(Foo)
-
-__#fetch__ extracts the inner value of the Monad, some Monads will override this standard behaviour, e.g. the Maybe Monad
-
-    Monad.unit('foo').fetch                                       == "foo"
-
 ### Maybe
-Is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Maybe, stays in the Maybe'. 
+Most people probably will be interested in the Maybe monad, as it solves the problem with nil invocations, similar to [andand](https://github.com/raganwald/andand) and others.
+
+Maybe is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Maybe, stays in the Maybe'. 
 
     Maybe(User.find(123)).name._         # ._ is a shortcut for .fetch 
 
@@ -226,6 +206,28 @@ Example:
     end
 
 The above example, returns either `Success()` or `Failure(['Age must be > 0', 'No drunks allowed']) with a list of what went wrong during the validation.
+
+### Monad 
+All Monads inherit from this class. Standalone it is an Identity monad. Not useful on its own. It's methods are usable on all its descendants.
+
+__#map__ is used to map the inner value
+
+    Monad.unit('FOO').map(&:capitalize).map {|v| "Hello #{v}"}    == Monad(Hello Foo)
+    Monad.unit([1,2]).map {|v| v + 1}                             == Monad([2, 3])
+
+__#bind__ allows (priviledged) access to the boxed value. This is the traditional _no-magic_ `#bind` as found in Haskell, 
+You are responsible for re-wrapping the value into a Monad again.
+  
+    # due to the way it works, it will simply return the value, don't rely on this though, different Monads may
+    # implement bind differently (e.g. Maybe involves some _magic_)
+    Monad.unit('foo').bind(&:capitalize)                          == Foo
+
+    # proper use
+    Monad.unit('foo').bind {|v| Monad.unit(v.capitalize) }        == Monad(Foo)
+
+__#fetch__ extracts the inner value of the Monad, some Monads will override this standard behaviour, e.g. the Maybe Monad
+
+    Monad.unit('foo').fetch                                       == "foo"
 
 ## References
 
