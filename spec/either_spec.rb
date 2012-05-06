@@ -75,6 +75,12 @@ describe Monadic::Either do
     Failure.should === Either(nil)
   end
 
+  it 'Either on an either returns the Either self to allow coercion' do
+    Either(Success(1)).should == Success(1)
+    Success(Success(1)).should == Success(1)
+    Failure(Failure(1)).should == Failure(1)
+  end
+
   it 'Either with a non-falsey value returns success' do
     Success.should === Either(1)
     Success.should === Either(true)
@@ -166,6 +172,15 @@ describe Monadic::Either do
     either.should == Success(1)
   end
 
+  it 'allows to add Eithers without specifying a block or proc' do
+    (Failure(1) + Failure(2)).should  == Failure(1)
+    (Success(1) + Failure(2)).should  == Failure(2)
+    (Success(1) + Success(2)).should  == Success(2)
+    (Failure(1) >= Failure(2)).should == Failure(1)
+    (Success(1) >= Failure(2)).should == Failure(2)
+    (Success(1) >= Success(2)).should == Success(2)
+  end
+
   it 'allows to check whether the result was a success or failure' do
     Success(0).success?.should be_true
     Success(1).failure?.should be_false
@@ -174,7 +189,7 @@ describe Monadic::Either do
     Failure(3).failure?.should be_true
   end
 
-  it 'supprts Either.chain' do
+  it 'supports Either.chain' do
     Either.chain do 
       bind -> { Success(1) }
       bind -> { Success(2) }
