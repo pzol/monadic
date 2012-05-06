@@ -14,12 +14,6 @@ module Monadic
       @value.respond_to?(:empty?) && @value.empty?
     end
 
-    def to_ary
-      return [@value].flatten if @value.respond_to? :flatten
-      return [@value]
-    end
-    alias :to_a :to_ary
-
     # @return [Failure, Success] the Maybe Monad filtered with the block or proc expression
     def select(proc = nil, &block)
       return Maybe(@value.select(&block)) if @value.is_a?(::Enumerable)

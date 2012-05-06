@@ -25,4 +25,10 @@ describe Monadic::Monad do
       Monad.unit(['foo', 'bar']).map(&:upcase).should == Monad.unit(['FOO', 'BAR'])
     end
   end
+
+  describe '#to_ary #to_a' do
+    Monad.unit([1, 2]).to_a.should == [1, 2]
+    Monad.unit(nil).to_a.should == []
+    Monad.unit('foo').to_a.should == ['foo']
+  end
 end
