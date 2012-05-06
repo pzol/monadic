@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.1.0
+
+You can now chain Eithers with `+` without providing a block or a proc:
+
+    Success(1) + Failure(2)     == Failure(2)
+    Failure(1) + Failure(2)     == Failure(1)
+
+All monads now have the `#to_ary` and `#to_a` method, which coerces the inner value into an `Array`.
+
+I am considering the Api now almost stable, the only thing I am not so sure about, 
+is whether to apply the magic coercion or not.
+
+`Validation()` now returns the successfully validated values. See examples/validation.rb
+
 ## v0.0.7 
 
 Implements the #map method for all Monads. It works on value types and on Enumerable collections.  
