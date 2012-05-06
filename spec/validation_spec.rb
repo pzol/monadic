@@ -42,6 +42,6 @@ describe Monadic::Validation do
 
     success = validate(Person.new(age = 30, gender = :male, sobriety = :sober, name = 'test'))
     success.should be_a Success
-    success.should == Success([])
+    success.should == Success([30, :sober, :male])
   end
 end
