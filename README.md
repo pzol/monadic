@@ -218,7 +218,7 @@ Example:
 
 The above example, returns either `Success([32, :sober, :male])` or `Failure(['Age must be > 0', 'No drunks allowed'])` with a list of what went wrong during the validation.
 
-See also exmaples/validation.rb
+See also [examples/validation.rb](https://github.com/pzol/monadic/blob/master/examples/validation.rb) and [examples/validation_module](https://github.com/pzol/monadic/blob/master/examples/validation_module.rb) 
 
 ### Monad 
 All Monads inherit from this class. Standalone it is an Identity monad. Not useful on its own. It's methods are usable on all its descendants.

@@ -12,7 +12,10 @@ All monads now have the `#to_ary` and `#to_a` method, which coerces the inner va
 I am considering the Api now almost stable, the only thing I am not so sure about, 
 is whether to apply the magic coercion or not.
 
-`Validation()` now returns the successfully validated values. See examples/validation.rb
+`Validation()` now returns the successfully validated values.
+See [examples/validation.rb](https://github.com/pzol/monadic/blob/master/examples/validation.rb)
+and [examples/validation_module](https://github.com/pzol/monadic/blob/master/examples/validation_module.rb)
+
 
 ## v0.0.7 
 
