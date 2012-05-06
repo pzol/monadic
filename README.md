@@ -23,6 +23,8 @@ Most people probably will be interested in the Maybe monad, as it solves the pro
 
 Maybe is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Maybe, stays in the Maybe'. 
 
+
+```ruby
     Maybe(User.find(123)).name._         # ._ is a shortcut for .fetch 
 
     # if you prefer the alias Maybe instead of option
@@ -32,9 +34,11 @@ Maybe is an optional type, which helps to handle error conditions gracefully. Th
     Maybe({})[:a][:b][:c]                   == Nothing
     Maybe({})[:a][:b][:c].fetch('unknown')  == "unknown"
     Maybe(a: 1)[:a]._                       == 1
+```
 
 Basic usage examples:
 
+```ruby
     # handling nil (None serves as NullObject)
     Maybe(nil).a.b.c            == Nothing
 
@@ -53,24 +57,30 @@ Basic usage examples:
     Maybe('foo').truly?         == true           # depends on the boxed value
     Maybe(false).empty?         == false
     Maybe(false).truly?         == false
+```
 
 Map, select:
     
+```ruby    
     Maybe(123).map   { |value| User.find(value) } == Just(someUser)      # if user found
     Maybe(0).map     { |value| User.find(value) } == Nothing             # if user not found
     Maybe([1,2]).map { |value| value.to_s }       == Just(["1", "2"])    # for all Enumerables
 
     Maybe('foo').select { |value| value.start_with?('f') } == Just('foo')
     Maybe('bar').select { |value| value.start_with?('f') } == Nothing
+```
 
 Treat it like an array:
 
+```ruby
     Maybe(123).to_a          == [123]
     Maybe([123, 456]).to_a   == [123, 456]
     Maybe(nil).to_a          == []
+```
 
 Falsey values (kind-of) examples:
 
+```ruby
     user = Maybe(User.find(123))
     user.name._
 
@@ -78,6 +88,7 @@ Falsey values (kind-of) examples:
     user.subscribed?.truly?       # true if subscribed is true
     user.subscribed?.fetch(false) # same as above
     user.subscribed?.or(false)    # same as above
+```
 
 Remember! a Maybe is never false (in Ruby terms), if you want to know if it is false, call `#empty?` of `#truly?`
 
@@ -85,6 +96,7 @@ Remember! a Maybe is never false (in Ruby terms), if you want to know if it is f
 
 Slug example
 
+```ruby
     # instead of 
     def slug(title)
       if title
@@ -102,15 +114,18 @@ Slug example
     def slug(title)
       Maybe(title).strip.downcase.tr_s('^[a-z0-9]', '-')._('unknown-title')
     end
+```
 
 ### Object#_?
 Works similar to the Elvis operator _? - ruby does not allow ?: as operator and use it like the excellent [andand](https://github.com/raganwald/andand)
 
+```ruby
     require 'monadic/core_ext/object'   # this will import _? into the global Object
     nil._?           == Nothing
     "foo"._?         == 'foo'
     {}._?.a.b        == Nothing
     {}._?[:foo]      == Nothing
+```
 
 In fact this is a shortcut notation for `Maybe(obj)`
 
@@ -124,6 +139,7 @@ What is specific to this implementation is that exceptions are caught within the
 
 The `Either()` wrapper will treat all falsey values `nil`, `false` or `empty?` as a `Failure` and all others as `Success`. If that does not suit you, use `Success` or `Failure` only.
 
+```ruby
     result = parse_and_validate_params(params).                 # must return a Success or Failure inside
                 bind ->(user_id) { User.find(user_id) }.        # if #find returns null it will become a Failure
                 bind ->(user)    { authorized?(user); user }.   # if authorized? raises an Exception, it will be a Failure 
@@ -136,9 +152,11 @@ The `Either()` wrapper will treat all falsey values `nil`, `false` or `empty?` a
       @error = result.fetch
       render 'error_page'
     end
+```
 
 You can use alternate syntaxes to achieve the same goal:
 
+```ruby
     # block and Haskell like >= operator
     Either(operation).
       >= { successful_method }.
@@ -157,20 +175,26 @@ You can use alternate syntaxes to achieve the same goal:
 
     either = Either(something)
     either += truth? Success('truth, only the truth') : Failure('lies, damn lies')
+```
 
 Exceptions are wrapped into a Failure:
 
+```ruby
     Either(true).
       bind -> { fail 'get me out of here' }                    # return a Failure(RuntimeError)
+```
 
 Another example:
 
+```ruby
     Success(params).
       bind ->(params)   { Either(params.fetch(:path)) }        # fails if params does not contain :path
       bind ->(path)     { load_stuff(params)          }        # 
+```
 
 Storing intermediate results in instance variables is possible, although it is not very elegant:
 
+```ruby
     result = Either.chain do
       bind { @map = { one: 1, two: 2 } }
       bind { @map.fetch(:one) }
@@ -178,7 +202,7 @@ Storing intermediate results in instance variables is possible, although it is n
     end
 
     result == Success(101)
-
+```    
 
 ### Validation 
 The Validation applicative functor, takes a list of checks within a block. Each check must return either Success of Failure.  
@@ -187,6 +211,7 @@ Within the Failure() provide the reason why the check failed.
 
 Example:
 
+```ruby
     def validate(person)
       check_age = ->(age_expr) {
         age = age_expr.to_i
@@ -215,6 +240,7 @@ Example:
         check { check_gender.(person.gender)     }
       end
     end
+```
 
 The above example, returns either `Success([32, :sober, :male])` or `Failure(['Age must be > 0', 'No drunks allowed'])` with a list of what went wrong during the validation.
 
@@ -225,22 +251,28 @@ All Monads inherit from this class. Standalone it is an Identity monad. Not usef
 
 __#map__ is used to map the inner value
 
+```ruby
     Monad.unit('FOO').map(&:capitalize).map {|v| "Hello #{v}"}    == Monad(Hello Foo)
     Monad.unit([1,2]).map {|v| v + 1}                             == Monad([2, 3])
+```ruby
 
 __#bind__ allows (priviledged) access to the boxed value. This is the traditional _no-magic_ `#bind` as found in Haskell, 
-You are responsible for re-wrapping the value into a Monad again.
+You` are responsible for re-wrapping the value into a Monad again.
   
+```ruby  
     # due to the way it works, it will simply return the value, don't rely on this though, different Monads may
     # implement bind differently (e.g. Maybe involves some _magic_)
     Monad.unit('foo').bind(&:capitalize)                          == Foo
 
     # proper use
     Monad.unit('foo').bind {|v| Monad.unit(v.capitalize) }        == Monad(Foo)
+```
 
 __#fetch__ extracts the inner value of the Monad, some Monads will override this standard behaviour, e.g. the Maybe Monad
 
+```ruby
     Monad.unit('foo').fetch                                       == "foo"
+```
 
 ## References
 
