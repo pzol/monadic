@@ -216,7 +216,9 @@ Example:
       end
     end
 
-The above example, returns either `Success()` or `Failure(['Age must be > 0', 'No drunks allowed'])` with a list of what went wrong during the validation.
+The above example, returns either `Success([32, :sober, :male])` or `Failure(['Age must be > 0', 'No drunks allowed'])` with a list of what went wrong during the validation.
+
+See also exmaples/validation.rb
 
 ### Monad 
 All Monads inherit from this class. Standalone it is an Identity monad. Not useful on its own. It's methods are usable on all its descendants.
