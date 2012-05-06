@@ -25,69 +25,69 @@ Maybe is an optional type, which helps to handle error conditions gracefully. Th
 
 
 ```ruby
-    Maybe(User.find(123)).name._         # ._ is a shortcut for .fetch 
+Maybe(User.find(123)).name._         # ._ is a shortcut for .fetch 
 
-    # if you prefer the alias Maybe instead of option
-    Maybe(User.find(123)).name._
+# if you prefer the alias Maybe instead of option
+Maybe(User.find(123)).name._
 
-    # confidently diving into nested hashes
-    Maybe({})[:a][:b][:c]                   == Nothing
-    Maybe({})[:a][:b][:c].fetch('unknown')  == "unknown"
-    Maybe(a: 1)[:a]._                       == 1
+# confidently diving into nested hashes
+Maybe({})[:a][:b][:c]                   == Nothing
+Maybe({})[:a][:b][:c].fetch('unknown')  == "unknown"
+Maybe(a: 1)[:a]._                       == 1
 ```
 
 Basic usage examples:
 
 ```ruby
-    # handling nil (None serves as NullObject)
-    Maybe(nil).a.b.c            == Nothing
+# handling nil (None serves as NullObject)
+Maybe(nil).a.b.c            == Nothing
 
-    # Nothing
-    Maybe(nil)._                == Nothing
-    "#{Maybe(nil)}"             == "Nothing"
-    Maybe(nil)._("unknown")     == "unknown"
-    Maybe(nil).empty?           == true
-    Maybe(nil).truly?           == false
+# Nothing
+Maybe(nil)._                == Nothing
+"#{Maybe(nil)}"             == "Nothing"
+Maybe(nil)._("unknown")     == "unknown"
+Maybe(nil).empty?           == true
+Maybe(nil).truly?           == false
 
-    # Just stays Just, unless you unbox it
-    Maybe('FOO').downcase       == Just('foo') 
-    Maybe('FOO').downcase.fetch == "foo"          # unboxing the value
-    Maybe('FOO').downcase._     == "foo"          
-    Maybe('foo').empty?         == false          # always non-empty
-    Maybe('foo').truly?         == true           # depends on the boxed value
-    Maybe(false).empty?         == false
-    Maybe(false).truly?         == false
+# Just stays Just, unless you unbox it
+Maybe('FOO').downcase       == Just('foo') 
+Maybe('FOO').downcase.fetch == "foo"          # unboxing the value
+Maybe('FOO').downcase._     == "foo"          
+Maybe('foo').empty?         == false          # always non-empty
+Maybe('foo').truly?         == true           # depends on the boxed value
+Maybe(false).empty?         == false
+Maybe(false).truly?         == false
 ```
 
 Map, select:
     
 ```ruby    
-    Maybe(123).map   { |value| User.find(value) } == Just(someUser)      # if user found
-    Maybe(0).map     { |value| User.find(value) } == Nothing             # if user not found
-    Maybe([1,2]).map { |value| value.to_s }       == Just(["1", "2"])    # for all Enumerables
+Maybe(123).map   { |value| User.find(value) } == Just(someUser)      # if user found
+Maybe(0).map     { |value| User.find(value) } == Nothing             # if user not found
+Maybe([1,2]).map { |value| value.to_s }       == Just(["1", "2"])    # for all Enumerables
 
-    Maybe('foo').select { |value| value.start_with?('f') } == Just('foo')
-    Maybe('bar').select { |value| value.start_with?('f') } == Nothing
+Maybe('foo').select { |value| value.start_with?('f') } == Just('foo')
+Maybe('bar').select { |value| value.start_with?('f') } == Nothing
 ```
 
 Treat it like an array:
 
 ```ruby
-    Maybe(123).to_a          == [123]
-    Maybe([123, 456]).to_a   == [123, 456]
-    Maybe(nil).to_a          == []
+ Maybe(123).to_a          == [123]
+ Maybe([123, 456]).to_a   == [123, 456]
+ Maybe(nil).to_a          == []
 ```
 
 Falsey values (kind-of) examples:
 
 ```ruby
-    user = Maybe(User.find(123))
-    user.name._
+user = Maybe(User.find(123))
+user.name._
 
-    user.subscribed?              # always true
-    user.subscribed?.truly?       # true if subscribed is true
-    user.subscribed?.fetch(false) # same as above
-    user.subscribed?.or(false)    # same as above
+user.subscribed?              # always true
+user.subscribed?.truly?       # true if subscribed is true
+user.subscribed?.fetch(false) # same as above
+user.subscribed?.or(false)    # same as above
 ```
 
 Remember! a Maybe is never false (in Ruby terms), if you want to know if it is false, call `#empty?` of `#truly?`
@@ -97,34 +97,34 @@ Remember! a Maybe is never false (in Ruby terms), if you want to know if it is f
 Slug example
 
 ```ruby
-    # instead of 
-    def slug(title)
-      if title
-        title.strip.downcase.tr_s('^[a-z0-9]', '-')
-      end
-    end
+# instead of 
+def slug(title)
+  if title
+    title.strip.downcase.tr_s('^[a-z0-9]', '-')
+  end
+end
 
-    # or 
+# or 
 
-    def slug(title)
-      title && title.strip.downcase.tr_s('^[a-z0-9]', '-')
-    end
+def slug(title)
+  title && title.strip.downcase.tr_s('^[a-z0-9]', '-')
+end
 
-    # do it with a default
-    def slug(title)
-      Maybe(title).strip.downcase.tr_s('^[a-z0-9]', '-')._('unknown-title')
-    end
+# do it with a default
+def slug(title)
+  Maybe(title).strip.downcase.tr_s('^[a-z0-9]', '-')._('unknown-title')
+end
 ```
 
 ### Object#_?
 Works similar to the Elvis operator _? - ruby does not allow ?: as operator and use it like the excellent [andand](https://github.com/raganwald/andand)
 
 ```ruby
-    require 'monadic/core_ext/object'   # this will import _? into the global Object
-    nil._?           == Nothing
-    "foo"._?         == 'foo'
-    {}._?.a.b        == Nothing
-    {}._?[:foo]      == Nothing
+require 'monadic/core_ext/object'   # this will import _? into the global Object
+nil._?           == Nothing
+"foo"._?         == 'foo'
+{}._?.a.b        == Nothing
+{}._?[:foo]      == Nothing
 ```
 
 In fact this is a shortcut notation for `Maybe(obj)`
@@ -140,68 +140,68 @@ What is specific to this implementation is that exceptions are caught within the
 The `Either()` wrapper will treat all falsey values `nil`, `false` or `empty?` as a `Failure` and all others as `Success`. If that does not suit you, use `Success` or `Failure` only.
 
 ```ruby
-    result = parse_and_validate_params(params).                 # must return a Success or Failure inside
-                bind ->(user_id) { User.find(user_id) }.        # if #find returns null it will become a Failure
-                bind ->(user)    { authorized?(user); user }.   # if authorized? raises an Exception, it will be a Failure 
-                bind ->(user)    { UserDecorator(user) }
+result = parse_and_validate_params(params).                 # must return a Success or Failure inside
+            bind ->(user_id) { User.find(user_id) }.        # if #find returns null it will become a Failure
+            bind ->(user)    { authorized?(user); user }.   # if authorized? raises an Exception, it will be a Failure 
+            bind ->(user)    { UserDecorator(user) }
 
-    if result.success?
-      @user = result.fetch                                      # result.fetch or result._ contains the 
-      render 'page'
-    else
-      @error = result.fetch
-      render 'error_page'
-    end
+if result.success?
+  @user = result.fetch                                      # result.fetch or result._ contains the 
+  render 'page'
+else
+  @error = result.fetch
+  render 'error_page'
+end
 ```
 
 You can use alternate syntaxes to achieve the same goal:
 
 ```ruby
-    # block and Haskell like >= operator
-    Either(operation).
-      >= { successful_method }.
-      >= { failful_operation }
+# block and Haskell like >= operator
+Either(operation).
+  >= { successful_method }.
+  >= { failful_operation }
 
-    # start with a Success, for instance a parameter
-    Success('pzol').
-      bind ->(previous) { good }.
-      bind ->           { bad  }
+# start with a Success, for instance a parameter
+Success('pzol').
+  bind ->(previous) { good }.
+  bind ->           { bad  }
 
-    Either.chain do
-      bind ->                   { good   }                     # >= is not supported for Either.chain, only bind
-      bind ->                   { better }                     # better returns Success(some_int)
-      bind ->(previous_result)  { previous_result + 1 }
-    end
+Either.chain do
+  bind ->                   { good   }                     # >= is not supported for Either.chain, only bind
+  bind ->                   { better }                     # better returns Success(some_int)
+  bind ->(previous_result)  { previous_result + 1 }
+end
 
-    either = Either(something)
-    either += truth? Success('truth, only the truth') : Failure('lies, damn lies')
+either = Either(something)
+either += truth? Success('truth, only the truth') : Failure('lies, damn lies')
 ```
 
 Exceptions are wrapped into a Failure:
 
 ```ruby
-    Either(true).
-      bind -> { fail 'get me out of here' }                    # return a Failure(RuntimeError)
+Either(true).
+  bind -> { fail 'get me out of here' }                    # return a Failure(RuntimeError)
 ```
 
 Another example:
 
 ```ruby
-    Success(params).
-      bind ->(params)   { Either(params.fetch(:path)) }        # fails if params does not contain :path
-      bind ->(path)     { load_stuff(params)          }        # 
+Success(params).
+  bind ->(params)   { Either(params.fetch(:path)) }        # fails if params does not contain :path
+  bind ->(path)     { load_stuff(params)          }        # 
 ```
 
 Storing intermediate results in instance variables is possible, although it is not very elegant:
 
 ```ruby
-    result = Either.chain do
-      bind { @map = { one: 1, two: 2 } }
-      bind { @map.fetch(:one) }
-      bind { |p| Success(p + 100) }
-    end
+result = Either.chain do
+  bind { @map = { one: 1, two: 2 } }
+  bind { @map.fetch(:one) }
+  bind { |p| Success(p + 100) }
+end
 
-    result == Success(101)
+result == Success(101)
 ```    
 
 ### Validation 
@@ -212,34 +212,34 @@ Within the Failure() provide the reason why the check failed.
 Example:
 
 ```ruby
-    def validate(person)
-      check_age = ->(age_expr) {
-        age = age_expr.to_i
-        case 
-        when age <=  0; Failure('Age must be > 0')
-        when age > 130; Failure('Age must be < 130')
-        else Success(age)
-        end
-      }
-
-      check_sobriety = ->(sobriety) {
-        case sobriety
-        when :sober, :tipsy; Success(sobriety)
-        when :drunk        ; Failure('No drunks allowed')
-        else Failure("Sobriety state '#{sobriety}' is not allowed")
-        end 
-      }
-
-      check_gender = ->(gender) {
-        gender == :male || gender == :female ? Success(gender) : Failure("Invalid gender #{gender}")
-      }
-        
-      Validation() do
-        check { check_age.(person.age);          }
-        check { check_sobriety.(person.sobriety) }
-        check { check_gender.(person.gender)     }
-      end
+def validate(person)
+  check_age = ->(age_expr) {
+    age = age_expr.to_i
+    case 
+    when age <=  0; Failure('Age must be > 0')
+    when age > 130; Failure('Age must be < 130')
+    else Success(age)
     end
+  }
+
+  check_sobriety = ->(sobriety) {
+    case sobriety
+    when :sober, :tipsy; Success(sobriety)
+    when :drunk        ; Failure('No drunks allowed')
+    else Failure("Sobriety state '#{sobriety}' is not allowed")
+    end 
+  }
+
+  check_gender = ->(gender) {
+    gender == :male || gender == :female ? Success(gender) : Failure("Invalid gender #{gender}")
+  }
+    
+  Validation() do
+    check { check_age.(person.age);          }
+    check { check_sobriety.(person.sobriety) }
+    check { check_gender.(person.gender)     }
+  end
+end
 ```
 
 The above example, returns either `Success([32, :sober, :male])` or `Failure(['Age must be > 0', 'No drunks allowed'])` with a list of what went wrong during the validation.
@@ -252,26 +252,26 @@ All Monads inherit from this class. Standalone it is an Identity monad. Not usef
 __#map__ is used to map the inner value
 
 ```ruby
-    Monad.unit('FOO').map(&:capitalize).map {|v| "Hello #{v}"}    == Monad(Hello Foo)
-    Monad.unit([1,2]).map {|v| v + 1}                             == Monad([2, 3])
-```ruby
+Monad.unit('FOO').map(&:capitalize).map {|v| "Hello #{v}"}    == Monad(Hello Foo)
+Monad.unit([1,2]).map {|v| v + 1}                             == Monad([2, 3])
+```
 
 __#bind__ allows (priviledged) access to the boxed value. This is the traditional _no-magic_ `#bind` as found in Haskell, 
 You` are responsible for re-wrapping the value into a Monad again.
   
 ```ruby  
-    # due to the way it works, it will simply return the value, don't rely on this though, different Monads may
-    # implement bind differently (e.g. Maybe involves some _magic_)
-    Monad.unit('foo').bind(&:capitalize)                          == Foo
+# due to the way it works, it will simply return the value, don't rely on this though, different Monads may
+# implement bind differently (e.g. Maybe involves some _magic_)
+Monad.unit('foo').bind(&:capitalize)                          == Foo
 
-    # proper use
-    Monad.unit('foo').bind {|v| Monad.unit(v.capitalize) }        == Monad(Foo)
+# proper use
+Monad.unit('foo').bind {|v| Monad.unit(v.capitalize) }        == Monad(Foo)
 ```
 
 __#fetch__ extracts the inner value of the Monad, some Monads will override this standard behaviour, e.g. the Maybe Monad
 
 ```ruby
-    Monad.unit('foo').fetch                                       == "foo"
+Monad.unit('foo').fetch                                       == "foo"
 ```
 
 ## References
