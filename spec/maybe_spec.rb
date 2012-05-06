@@ -115,7 +115,7 @@ describe Monadic::Maybe do
     Maybe([1, 2]).select { |e| e == 1             }.should == Just([1])
   end
 
-  it 'acts as an array' do
+  it 'acts as an array (inherited from Monad)' do
     Maybe('foo').to_a.should == ['foo']
     Maybe(['foo', 'bar']).to_a.should == ['foo', 'bar']
     Maybe(nil).to_a.should == []

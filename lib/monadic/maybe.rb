@@ -9,6 +9,7 @@ module Monadic
     # are required (Maybe is abstract).
     private_class_method :new
 
+    # @return true if the underlying object responds to #empty?, false otherwise
     def empty?
       @value.respond_to?(:empty?) && @value.empty?
     end
@@ -19,6 +20,7 @@ module Monadic
     end
     alias :to_a :to_ary
 
+    # @return [Failure, Success] the Maybe Monad filtered with the block or proc expression
     def select(proc = nil, &block)
       return Maybe(@value.select(&block)) if @value.is_a?(::Enumerable)
       return Nothing unless (proc || block).call(@value)
@@ -30,6 +32,7 @@ module Monadic
     end
   end
 
+  # Represents an existing value
   class Just < Maybe
     public_class_method :new
 
@@ -43,6 +46,7 @@ module Monadic
     end
   end
 
+  # Represents a NullObject
   class Nothing < Maybe
     class << self
       def fetch(default=nil)

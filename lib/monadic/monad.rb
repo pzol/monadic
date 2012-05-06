@@ -8,6 +8,7 @@ module Monadic
       @value = join(value)
     end
 
+    # Allows priviledged access to the inner value of the Monad from within the block
     def bind(proc=nil, &block)
       (proc || block).call(@value)
     end
