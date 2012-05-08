@@ -43,7 +43,7 @@ describe Monadic::Either do
     Success(nil).bind { nil }.should == Failure(nil)
   end
 
-  it 'catches exceptions and returns them as Failure' do
+  it 'catches StandardError exceptions and returns them as Failure' do
     either = Success(nil).
       bind { raise 'error' }
 
