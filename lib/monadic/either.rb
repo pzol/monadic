@@ -24,8 +24,8 @@ module Monadic
 
       begin
         Either(call(proc, block))
-      rescue Exception => ex
-        Failure(ex)      
+      rescue StandardError => error
+        Failure(error)      
       end
     end
     alias :>=  :bind
