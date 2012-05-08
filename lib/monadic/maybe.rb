@@ -1,5 +1,7 @@
 module Monadic
-  class Maybe < Monad
+  class Maybe 
+    include Monadic::Monad
+    
     def self.unit(value)
       return Nothing if value.nil? || (value.respond_to?(:empty?) && value.empty?)
       return Just.new(value)

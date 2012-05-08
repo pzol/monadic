@@ -1,9 +1,5 @@
 module Monadic 
-  class Monad
-    def self.unit(value)
-      new(value)
-    end
-
+  module Monad
     def initialize(value)
       @value = join(value)
     end
@@ -41,7 +37,7 @@ module Monadic
       Array(@value)
     end
     alias :to_a :to_ary
-    
+      
     # Return the string representation of the Monad
     def to_s
       pretty_class_name = self.class.name.split('::')[-1]

@@ -1,6 +1,7 @@
 module Monadic
   # @abstract Chains function calls and stops executing if one of them fails.
-  class Either < Monad
+  class Either 
+    include Monadic::Monad
     def self.chain(initial=nil, &block)
       Either::Chain.new(&block).call(initial)
     end
