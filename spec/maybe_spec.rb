@@ -123,7 +123,7 @@ describe Monadic::Maybe do
 
   it 'diving into hashes' do
     Maybe({})['a']['b']['c'].should == Nothing
-    Maybe({a: 1})[:a]._.should == 1
+    Maybe({:a => 1})[:a]._.should == 1
   end
 
   it 'should support Rumonades example' do

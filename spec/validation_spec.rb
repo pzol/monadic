@@ -6,7 +6,7 @@ describe Monadic::Validation do
   it 'a projection of Success and Failure' do
 
     def validate(person)
-      check_age = ->(age_expr) {
+      check_age = lambda { |age_expr|
         age = age_expr.to_i
         case 
         when age <=  0; Failure('Age must be > 0')
@@ -15,7 +15,7 @@ describe Monadic::Validation do
         end
       }
 
-      check_sobriety = ->(sobriety) {
+      check_sobriety = lambda { |sobriety|
         case sobriety
         when :sober, :tipsy; Success(sobriety)
         when :drunk        ; Failure('No drunks allowed')
@@ -23,14 +23,14 @@ describe Monadic::Validation do
         end 
       }
 
-      check_gender = ->(gender) {
+      check_gender = lambda { |gender|
         gender == :male || gender == :female ? Success(gender) : Failure("Invalid gender #{gender}")
       }
         
       Validation() do
-        check { check_age.(person.age);          }
-        check { check_sobriety.(person.sobriety) }
-        check { check_gender.(person.gender)     }
+        check { check_age.call(person.age);          }
+        check { check_sobriety.call(person.sobriety) }
+        check { check_gender.call(person.gender)     }
       end
     end
 
