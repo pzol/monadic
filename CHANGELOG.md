@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.1.1
+
+`Either()` coerces only `StandardError` to `Failure`, other exceptions higher in the hierarchy are will break the flow.  
+Thanks to @pithyless for the suggestion. 
+
+Monad is now a Module instead of a Class as previously. This fits the Monad metaphor better. Each monad must now implement the unit method itself, which is the correct way to do anyway.
+
+
 ## v0.1.0
 
 You can now chain Eithers with `+` without providing a block or a proc:
