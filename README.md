@@ -247,13 +247,21 @@ The above example, returns either `Success([32, :sober, :male])` or `Failure(['A
 See also [examples/validation.rb](https://github.com/pzol/monadic/blob/master/examples/validation.rb) and [examples/validation_module](https://github.com/pzol/monadic/blob/master/examples/validation_module.rb) 
 
 ### Monad 
-All Monads inherit from this class. Standalone it is an Identity monad. Not useful on its own. It's methods are usable on all its descendants.
+All Monads include this module. Standalone it is an Identity monad. Not useful on its own. It's methods are usable on all its descendants.
 
 __#map__ is used to map the inner value
 
 ```ruby
-Monad.unit('FOO').map(&:capitalize).map {|v| "Hello #{v}"}    == Monad(Hello Foo)
-Monad.unit([1,2]).map {|v| v + 1}                             == Monad([2, 3])
+# minimum implementation of a monad
+class Identity 
+  include Monadic::Monad
+  def self.unit(value)
+    new(value)
+  end
+end
+
+Identity.unit('FOO').map(&:capitalize).map {|v| "Hello #{v}"}    == Identity(Hello Foo)
+Identity.unit([1,2]).map {|v| v + 1}                             == Identity([2, 3])
 ```
 
 __#bind__ allows (priviledged) access to the boxed value. This is the traditional _no-magic_ `#bind` as found in Haskell, 
@@ -262,16 +270,16 @@ You` are responsible for re-wrapping the value into a Monad again.
 ```ruby  
 # due to the way it works, it will simply return the value, don't rely on this though, different Monads may
 # implement bind differently (e.g. Maybe involves some _magic_)
-Monad.unit('foo').bind(&:capitalize)                          == Foo
+Identity.unit('foo').bind(&:capitalize)                          == Foo
 
 # proper use
-Monad.unit('foo').bind {|v| Monad.unit(v.capitalize) }        == Monad(Foo)
+Identity.unit('foo').bind {|v| Identity.unit(v.capitalize) }     == Identity(Foo)
 ```
 
 __#fetch__ extracts the inner value of the Monad, some Monads will override this standard behaviour, e.g. the Maybe Monad
 
 ```ruby
-Monad.unit('foo').fetch                                       == "foo"
+Identity.unit('foo').fetch                                       == "foo"
 ```
 
 ## References
