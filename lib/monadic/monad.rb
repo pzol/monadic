@@ -28,7 +28,7 @@ module Monadic
     # (A -> B) -> M[A] -> M[B]
     def map(proc = nil, &block)
       func = (proc || block)
-      return self.class.unit(@value.map {|v| func.call(v) }) if @value.is_a?(::Enumerable)
+      return self.class.unit(@value.map {|v| func.call(v) }) if @value.respond_to? :map
       return self.class.unit(func.call(@value))
     end
 

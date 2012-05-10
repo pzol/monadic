@@ -18,8 +18,9 @@ module Monadic
 
     # @return [Failure, Success] the Maybe Monad filtered with the block or proc expression
     def select(proc = nil, &block)
-      return Maybe(@value.select(&block)) if @value.is_a?(::Enumerable)
-      return Nothing unless (proc || block).call(@value)
+      func = (proc || block)
+      return Maybe(@value.select {|v| func.call(v) }) if @value.respond_to? :select
+      return Nothing unless func.call(@value)
       return self
     end
 
