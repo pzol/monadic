@@ -32,6 +32,13 @@ module Monadic
     alias :>=  :bind
     alias :+   :bind
 
+    # If it is a Failure it will return a new Failure with the provided value
+    # @return [Success, Failure] 
+    def else(value)
+      return Failure(value) if failure?
+      return self
+    end
+
     def fetch(default=@value)
       return default if failure?
       return @value

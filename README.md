@@ -137,7 +137,7 @@ What is specific to this implementation is that exceptions are caught within the
 `Success` represents a successfull execution of an operation (Right in Scala, Haskell).  
 `Failure` represents a failure to execute an operation (Left in Scala, Haskell).  
 
-The `Either()` wrapper will treat all falsey values `nil`, `false` or `empty?` as a `Failure` and all others as `Success`. If that does not suit you, use `Success` or `Failure` only.
+The `Either()` wrapper works like a coercon. It will treat all falsey values `nil`, `false` or `empty?` as a `Failure` and all others as `Success`. If that does not suit you, use `Success` or `Failure` only. However as ruby cannot enforce the value returned from within a bind, it will auto-magically coerce the return value into an `Either`.
 
 ```ruby
 result = parse_and_validate_params(params).                 # must return a Success or Failure inside
@@ -190,6 +190,13 @@ Another example:
 Success(params).
   bind ->(params)   { Either(params.fetch(:path)) }        # fails if params does not contain :path
   bind ->(path)     { load_stuff(params)          }        # 
+```
+
+`Either#else` allows to provide alternate values in case of `Failure`:
+
+```ruby
+Either(false == true).else('false was not true')          == Failure(false was not true)
+Success('truth needs no sugar coating').else('all lies')  == Success('truth needs no sugar coating')
 ```
 
 Storing intermediate results in instance variables is possible, although it is not very elegant:
