@@ -23,13 +23,23 @@ module Monadic
     end
     alias :_ :fetch
 
-    # A functor applying the proc or block on the boxed `value` and returning the Monad with the transformed values.
+    # A Functor applying the proc or block on the boxed `value` and returning the Monad with the transformed values.
     # If the underlying `value` is an `Enumerable`, the map is applied on each element of the collection.
     # (A -> B) -> M[A] -> M[B]
     def map(proc = nil, &block)
       func = (proc || block)
-      return self.class.unit(@value.map {|v| func.call(v) }) if @value.respond_to? :map
       return self.class.unit(func.call(@value))
+      # ary = Array(@value).map {|v| func.call(v)}
+      # return self.class.unit(ary) if @value.is_a? Enumerable
+      # return self.class.unit(ary[0])
+
+      # return self.class.unit(@value.map {|v| func.call(v) }) if @value.respond_to? :map
+      # return self.class.unit(func.call(@value))
+    end
+
+    def flat_map(proc = nil, &block)
+      func = (proc || block)
+      return self.class.unit(@value.map {|v| func.call(v) }) if @value.respond_to? :map
     end
 
     # @return [Array] a with the values inside the monad

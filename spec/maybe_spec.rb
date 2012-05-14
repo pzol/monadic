@@ -105,7 +105,7 @@ describe Monadic::Maybe do
   it 'allows to use map' do
     Maybe(nil).map { |e| Hash.new(:key => e) }.should == Nothing
     Maybe('foo').map { |e| Hash.new(:key => e) }.should == Just(Hash.new(:key => 'foo'))
-    Maybe([1,2]).map { |e| e.to_s }.should == Just(["1", "2"])
+    Maybe([1,2]).map { |e| e.to_s }.should == Just("[1, 2]")
   end
 
   it 'allows to use select' do
