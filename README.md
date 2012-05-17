@@ -64,10 +64,15 @@ Map, select:
 ```ruby    
 Maybe(123).map   { |value| User.find(value) } == Just(someUser)      # if user found
 Maybe(0).map     { |value| User.find(value) } == Nothing             # if user not found
-Maybe([1,2]).map { |value| value.to_s }       == Just(["1", "2"])    # for all Enumerables
+Maybe([1,2]).map { |value| value.to_s }       == Just(["1, 2"])      # for all Enumerables
 
 Maybe('foo').select { |value| value.start_with?('f') } == Just('foo')
 Maybe('bar').select { |value| value.start_with?('f') } == Nothing
+```
+
+For `Enumerable` use `#flat_map`:
+```ruby
+Maybe([1, 2]).flat_map {|v| v + 1 }           == Just([2, 3])
 ```
 
 Treat it like an array:
