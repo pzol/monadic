@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.0 (not released)
+## v0.2.0
 **BREAKING CHANGES**
 
 `Monad#map` does not recognize `Enumerables` automatically anymore. It just maps, as a `Functor`.  
