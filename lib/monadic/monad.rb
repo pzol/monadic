@@ -31,6 +31,7 @@ module Monadic
     end
 
     def flat_map(proc = nil, &block)
+      fail "Underlying value does not respond to #map" unless @value.respond_to? :map
       func = (proc || block)
       return self.class.unit(@value.map {|v| func.call(v) }) if @value.respond_to? :map
     end

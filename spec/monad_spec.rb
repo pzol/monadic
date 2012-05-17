@@ -29,6 +29,7 @@ describe Monadic::Monad do
   it 'delegates #flat_map to an underlying collection and wraps the resulting collection' do
     Identity.unit([1,2]).flat_map {|v| v + 1}.should == Identity.unit([2, 3])
     Identity.unit(['foo', 'bar']).flat_map(&:upcase).should == Identity.unit(['FOO', 'BAR'])
+    expect { Identity.unit(1).flat_map {|v| v + 1 } }.to raise_error(RuntimeError)
   end
 
   it '#to_ary #to_a' do
