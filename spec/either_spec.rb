@@ -62,7 +62,7 @@ describe Monadic::Either do
   end
 
   class User
-    attr :age, :gender, :sobriety
+    attr_accessor :age, :gender, :sobriety
     def self.find(id)
       case id 
       when -1; raise 'invalid user id'
@@ -97,7 +97,7 @@ describe Monadic::Either do
 
   it 'works' do
     either = Either(true).
-              bind -> { User.find(-1) }
+              bind lambda { User.find(-1) }
     either.failure?.should be_true
     RuntimeError.should === either.fetch
   end
@@ -149,8 +149,8 @@ describe Monadic::Either do
 
   it 'passes the result value from the previous call to the next' do
     either = Success(1).
-      >= {|prev| Success(prev + 1) }.     # a block 
-      >= -> prev { Success(prev + 100) }  # lambda/proc
+      >= {|prev| Success(prev + 1) }.     # a block
+      >= lambda { |prev| Success(prev + 100) }  # lambda/proc
 
     either.should == Success(102)
   end
@@ -160,22 +160,22 @@ describe Monadic::Either do
   end
 
   it 'allows you to use parameterless lambdas (#arity == 0)' do
-    (Success(0) >= 
-      -> { Success(1) }
+    (Success(0) >=
+      lambda { Success(1) }
     ).should == Success(1)
   end
 
   it 'allows you to use lambdas with the + operator' do
     either = Success(0) +
-      -> { Success(1) } +
-      -> { Success(2) }
+      lambda { Success(1) } +
+      lambda { Success(2) }
 
     either.should == Success(2)
   end
 
   it 'allows you to use +=' do
     either = Success(0)
-    either += -> { Success(1) }
+    either += lambda { Success(1) }
 
     either.should == Success(1)
   end
@@ -198,14 +198,14 @@ describe Monadic::Either do
   end
 
   it 'supports Either.chain' do
-    Either.chain do 
-      bind -> { Success(1) }
-      bind -> { Success(2) }
+    Either.chain do
+      bind lambda { Success(1) }
+      bind lambda { Success(2) }
     end.should == Success(2)
 
-    Either.chain do 
-      bind ->    { Success(1)     }
-      bind ->(p) { Success(p + 1) }
+    Either.chain do
+      bind lambda    { Success(1)     }
+      bind lambda    { |p| Success(p + 1) }
     end.should == Success(2)
 
     Either.chain do
@@ -233,12 +233,12 @@ describe Monadic::Either do
               bind {|path|    load_file(path)          }.
               bind {|content| process_content(content) }
     either.should be_a_failure
-    either.fetch.should be_a KeyError
+    either.fetch.should be_a (RUBY_VERSION == '1.8.7' ? IndexError : KeyError)
   end
 
   it 'instance variables' do
     result = Either.chain do
-      bind { @map = { one: 1, two: 2 } }
+      bind { @map = { :one => 1, :two => 2 } }
       bind { Success(100) }
       bind { @map.fetch(:one) }
       bind { |p| Success(p + 100) }

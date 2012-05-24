@@ -53,8 +53,8 @@ module Monadic
       is_a? Failure
     end
 
-    private 
-    def call(proc=nil, block)
+    private
+    def call(proc, block)
       func = (proc || block)
       raise "No block or lambda given" unless func.is_a? Proc
       (func.arity == 0 ? func.call : func.call(@value)) || Failure(nil)

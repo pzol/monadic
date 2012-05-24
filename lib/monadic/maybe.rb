@@ -1,13 +1,13 @@
 module Monadic
-  class Maybe 
+  class Maybe
     include Monadic::Monad
-    
+
     def self.unit(value)
       return Nothing if value.nil? || (value.respond_to?(:empty?) && value.empty?)
       return Just.new(value)
     end
 
-    # Initialize is private, because it always would return an instance of Maybe, but Just or Nothing 
+    # Initialize is private, because it always would return an instance of Maybe, but Just or Nothing
     # are required (Maybe is abstract).
     private_class_method :new
 
@@ -19,7 +19,7 @@ module Monadic
     # @return [Failure, Success] the Maybe Monad filtered with the block or proc expression
     def select(proc = nil, &block)
       func = (proc || block)
-      return Maybe(@value.select {|v| func.call(v) }) if @value.respond_to? :select
+      return Maybe(@value.select {|v| func.call(v) }) if @value.respond_to?(:select) unless @value.is_a?(String)
       return Nothing unless func.call(@value)
       return self
     end
