@@ -7,7 +7,7 @@ describe Monadic::Maybe do
 
   it 'Maybe cannot be created using #new, use #unit instead' do
     expect { Maybe.new(1) }.to raise_error NoMethodError
-  end 
+  end
 
   it 'nil as value always returns Nothing()' do
      Maybe(nil).a.b.c.should == Nothing
@@ -26,7 +26,7 @@ describe Monadic::Maybe do
       Maybe(nil).fetch.should == Nothing
       Maybe(nil)._.should == Nothing
       Maybe(nil).empty?.should be_true
-    end  
+    end
 
     it 'Nothing#to_s is "Nothing"' do
       option = Maybe(nil)
@@ -55,7 +55,7 @@ describe Monadic::Maybe do
     end
 
     it 'Just stays Just' do
-      Maybe('foo').should be_kind_of(Just) 
+      Maybe('foo').should be_kind_of(Just)
       Maybe('foo').empty?.should be_false
     end
 
@@ -65,10 +65,10 @@ describe Monadic::Maybe do
   end
 
   it 'calling methods on Maybe always returns an Maybe with the transformed value' do
-    Maybe('FOO').downcase.should == Just('foo') 
+    Maybe('FOO').downcase.should == Just('foo')
   end
 
-  it '#fetch returns the value of an option' do 
+  it '#fetch returns the value of an option' do
     Maybe('foo').fetch.should == 'foo'
     Maybe('foo')._.should == 'foo'
   end
@@ -105,7 +105,7 @@ describe Monadic::Maybe do
   it 'allows to use map' do
     Maybe(nil).map { |e| Hash.new(:key => e) }.should == Nothing
     Maybe('foo').map { |e| Hash.new(:key => e) }.should == Just(Hash.new(:key => 'foo'))
-    Maybe([1,2]).map { |e| e.to_s }.should == Just(["1", "2"])
+    Maybe([1,2]).map { |e| e.to_s }.should == Just([1, 2].to_s)
   end
 
   it 'allows to use select' do
@@ -139,7 +139,7 @@ describe Monadic::Maybe do
 
     format_date_in_march(nil).should == "not in march!"
     format_date_in_march(Time.parse('2009-01-01 01:02')).should == "not in march!"
-    format_date_in_march(Time.parse('2011-03-21 12:34')).should == "20110321"    
+    format_date_in_march(Time.parse('2011-03-21 12:34')).should == "20110321"
   end
 
 end

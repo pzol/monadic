@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.2.0
+**BREAKING CHANGES**
+
+`Monad#map` does not recognize `Enumerables` automatically anymore. It just maps, as a `Functor`.  
+Instead the new `Monad#flat_map` function operates on the underlying value as on `Enumerable`.
+
+`Either#else` allows to exchange the inner value of  `Nothing` to an alternative value.
+
+    Either(false == true).else('false was not true')          == Failure(false was not true)
+    Success('truth needs no sugar coating').else('all lies')  == Success('truth needs no sugar coating')
+
 ## v0.1.1
 
 `Either()` coerces only `StandardError` to `Failure`, other exceptions higher in the hierarchy are will break the flow.  

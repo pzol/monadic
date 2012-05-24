@@ -53,6 +53,14 @@ describe Monadic::Either do
     error.message.should == 'error'
   end
 
+  it '#else returns an alternative value considered Success if it is Nothing' do
+    Failure(false).else(true).should == Failure(true)
+    Either(nil).else(true).should == Failure(true)
+    Success(true).else(false).should == Success(true)
+    Either(true).else(false).should == Success(true)
+    Success(false).else(true).should == Success(false)
+  end
+
   class User
     attr_accessor :age, :gender, :sobriety
     def self.find(id)

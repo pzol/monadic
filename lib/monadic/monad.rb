@@ -1,4 +1,4 @@
-module Monadic 
+module Monadic
   module Monad
     def initialize(value)
       @value = join(value)
@@ -23,14 +23,17 @@ module Monadic
     end
     alias :_ :fetch
 
-    # A functor applying the proc or block on the boxed `value` and returning the Monad with the transformed values.
-    # If the underlying `value` is an `Enumerable`, the map is applied on each element of the collection.
+    # A Functor applying the proc or block on the boxed `value` and returning the Monad with the transformed values.
     # (A -> B) -> M[A] -> M[B]
     def map(proc = nil, &block)
       func = (proc || block)
-      # Treat 1.9 and 1.8 strings the same way
-      return self.class.unit(@value.map {|v| func.call(v) }) if @value.is_a?(::Enumerable) unless @value.is_a?(String)
       return self.class.unit(func.call(@value))
+    end
+
+    def flat_map(proc = nil, &block)
+      fail "Underlying value does not respond to #map" unless @value.respond_to? :map
+      func = (proc || block)
+      return self.class.unit(@value.map {|v| func.call(v) }) if @value.respond_to? :map
     end
 
     # @return [Array] a with the values inside the monad
@@ -38,7 +41,7 @@ module Monadic
       Array(@value)
     end
     alias :to_a :to_ary
-      
+
     # Return the string representation of the Monad
     def to_s
       pretty_class_name = self.class.name.split('::')[-1]
