@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.0
+`#or` returns for Nothing an alternative
+
+    Maybe(nil).or(1)          == 1
+    Maybe(1).or(2)            == 1
+
 ## v0.3.0
 **BREAKING CHANGES**
 `#to_s` returns the inner value converted to string
