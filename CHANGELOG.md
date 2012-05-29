@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.0
+**BREAKING CHANGES**
+`#to_s` returns the inner value converted to string
+
 ## v0.2.1
 Nothing has no method #name ... will need to use `BasicObject`
 
