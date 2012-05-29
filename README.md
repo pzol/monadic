@@ -83,12 +83,15 @@ Treat it like an array:
  Maybe(nil).to_a          == []
 ```
 
-`to_s`
+`#to_s`
 ```ruby
 Maybe(nil).to_s           == 'Nothing'
 Maybe(1).to_s             == '1'
 ```
 
+`#or`
+Maybe(nil).or(1)          == 1
+Maybe(1).or(2)            == 1
 
 Falsey values (kind-of) examples:
 

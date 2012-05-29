@@ -42,6 +42,10 @@ module Monadic
       Maybe(@value.__send__(m, *args))
     end
 
+    def or(other)
+      self
+    end
+
     def to_s
       @value.to_s
     end
@@ -60,6 +64,10 @@ module Monadic
 
       def method_missing(m, *args)
         self
+      end
+
+      def or(other)
+        Maybe(other)
       end
 
       def to_ary

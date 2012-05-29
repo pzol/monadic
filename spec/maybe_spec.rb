@@ -52,6 +52,10 @@ describe Monadic::Maybe do
       hd = Nothing
       hd.name.should == Monadic::Nothing
     end
+
+    it 'Nothing#or returns the alternative' do
+      Maybe(nil).or(1).should == Just(1)
+    end
   end
 
   describe Monadic::Just do
@@ -67,6 +71,11 @@ describe Monadic::Maybe do
     it 'Just#to_s is "value"' do
       Just.unit(123).to_s.should == "123"
     end
+
+    it 'Just#or return self' do
+      Maybe(1).or(2).should == Just(1)
+    end
+
   end
 
   it 'calling methods on Maybe always returns an Maybe with the transformed value' do
