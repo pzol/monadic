@@ -46,6 +46,8 @@ module Monadic
   # Represents a NullObject
   class Nothing < Maybe
     class << self
+      undef name
+
       def fetch(default=nil)
         return self if default.nil?
         return default

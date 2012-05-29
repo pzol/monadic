@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.2.1
+Nothing has no method #name ... will need to use `BasicObject`
+
 ## v0.2.0
 **BREAKING CHANGES**
 

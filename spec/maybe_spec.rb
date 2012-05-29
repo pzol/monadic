@@ -47,6 +47,11 @@ describe Monadic::Maybe do
       Nothing.empty?.should be_true
       Nothing.truly?.should be_false
     end
+
+    it 'returns Nothing when calling #name' do
+      hd = Nothing
+      hd.name.should == Monadic::Nothing
+    end
   end
 
   describe Monadic::Just do
