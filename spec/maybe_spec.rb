@@ -64,8 +64,8 @@ describe Monadic::Maybe do
       Maybe('foo').empty?.should be_false
     end
 
-    it 'Just#to_s is "Just(value)"' do
-      Just.unit(123).to_s.should == "Just(123)"
+    it 'Just#to_s is "value"' do
+      Just.unit(123).to_s.should == "123"
     end
   end
 

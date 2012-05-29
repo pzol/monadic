@@ -41,6 +41,10 @@ module Monadic
     def method_missing(m, *args)
       Maybe(@value.__send__(m, *args))
     end
+
+    def to_s
+      @value.to_s
+    end
   end
 
   # Represents a NullObject
