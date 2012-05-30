@@ -71,7 +71,7 @@ module Monadic
       end
 
       def or(other)
-        Just(other)
+        Just.new(other)
       end
 
       def to_ary
