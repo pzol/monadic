@@ -82,7 +82,6 @@ module Monadic
       def to_s
         'Nothing'
       end
-      alias :inspect :to_s
 
       def truly?
         false
