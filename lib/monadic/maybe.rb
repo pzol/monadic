@@ -42,6 +42,10 @@ module Monadic
       Maybe(@value.__send__(m, *args))
     end
 
+    def inspect
+      "Just(#{@value.inspect})"
+    end
+
     def or(other)
       self
     end
@@ -78,6 +82,7 @@ module Monadic
       def to_s
         'Nothing'
       end
+      alias :inspect :to_s
 
       def truly?
         false
