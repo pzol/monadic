@@ -24,6 +24,7 @@ module Monadic
       return self
     end
 
+    # @return [true, false] true if the underlying value is true
     def truly?
       @value == true
     end
@@ -33,6 +34,7 @@ module Monadic
   class Just < Maybe
     public_class_method :new
 
+    # @return the underlying value
     def fetch(default=nil)
       @value
     end
@@ -46,6 +48,7 @@ module Monadic
       "Just(#{@value.inspect})"
     end
 
+    # @return always self for Just
     def or(other)
       self
     end
@@ -60,6 +63,7 @@ module Monadic
     class << self
       undef name
 
+      # @return the default value passed
       def fetch(default=nil)
         return self if default.nil?
         return default
@@ -70,9 +74,14 @@ module Monadic
         self
       end
 
+      # @return an alternative value, the passed value is NOT coerced into Maybe, thus Nothing.or(nil) will be Just(nil)
       def or(other)
         Just.new(other)
       end
+
+      # def respond_to?
+
+      # end
 
       def to_ary
         []
