@@ -45,7 +45,7 @@ module Monadic
     # Return the string representation of the Monad
     def to_s
       pretty_class_name = self.class.name.split('::')[-1]
-      "#{pretty_class_name}(#{@value.nil? ? 'nil' : @value.to_s})"
+      "#{pretty_class_name}(#{self.fetch.inspect})"
     end
 
     def ==(other)

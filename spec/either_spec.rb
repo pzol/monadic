@@ -27,7 +27,7 @@ describe Monadic::Either do
   end
 
   it '#to_s works' do
-    Success.unit("it worked!").to_s.should == "Success(it worked!)"
+    Success.unit("it worked!").to_s.should == 'Success("it worked!")'
     Failure.unit(nil).to_s.should == "Failure(nil)"
   end
 

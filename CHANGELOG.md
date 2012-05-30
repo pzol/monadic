@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.5.0
+
+`Monad#to_s` uses `Object#inspect` to show the inner value, thus `Success(some string)` becomes `Success("some string")`, should remain unchanged otherwise.
 ## v0.4.0
 `#or` returns for Nothing an alternative
 
