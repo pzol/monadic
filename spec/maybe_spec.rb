@@ -73,7 +73,8 @@ describe Monadic::Maybe do
     end
 
     it 'Just#or return self' do
-      Maybe(1).or(2).should == Just(1)
+      Maybe(1).or(2).should     == Just(1)
+      Maybe(nil).or(nil).should == Just(nil)
     end
 
   end

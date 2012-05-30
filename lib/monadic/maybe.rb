@@ -67,7 +67,7 @@ module Monadic
       end
 
       def or(other)
-        Maybe(other)
+        Just(other)
       end
 
       def to_ary

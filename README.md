@@ -92,6 +92,7 @@ Maybe(1).to_s             == '1'
 `#or`
 Maybe(nil).or(1)          == 1
 Maybe(1).or(2)            == 1
+Maybe(nil).or(nil)        == Just(nil)
 
 Falsey values (kind-of) examples:
 
