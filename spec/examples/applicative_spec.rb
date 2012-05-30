@@ -10,11 +10,11 @@ module Applicative
   alias :<< :apply
 end
 
-class Maybe
+class Monadic::Just
   include Applicative
 end
 
-class Either
+class Monadic::Either
   include Applicative
 end
 
