@@ -82,6 +82,10 @@ describe Monadic::Maybe do
       Just(1).inspect.should == 'Just(1)'
     end
 
+    it 'works with method_missing !caution! with Monad.methods like #join' do
+      Maybe([1, 2]).join(' ').should == ' '
+    end
+
   end
 
   it 'calling methods on Maybe always returns an Maybe with the transformed value' do
