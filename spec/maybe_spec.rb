@@ -69,7 +69,7 @@ describe Monadic::Maybe do
     end
 
     it 'Just#to_s is "value"' do
-      Just.unit(123).to_s.should == "123"
+      Just.unit(123).to_s.should == "Just(123)"
     end
 
     it 'Just#or return self' do

@@ -44,17 +44,9 @@ module Monadic
       Maybe(@value.__send__(m, *args))
     end
 
-    def inspect
-      "Just(#{@value.inspect})"
-    end
-
     # @return always self for Just
     def or(other)
       self
-    end
-
-    def to_s
-      @value.to_s
     end
   end
 
