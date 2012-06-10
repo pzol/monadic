@@ -1,5 +1,5 @@
 # Monadic
-[![Build Status](https://secure.travis-ci.org/pzol/monadic.png?branch=master)](http://travis-ci.org/pzol/monadic) 
+[![Build Status](https://secure.travis-ci.org/pzol/monadic.png?branch=master)](http://travis-ci.org/pzol/monadic) [![endorse](http://api.coderwall.com/pzol/endorsecount.png)](http://coderwall.com/pzol)
 
 helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in [Scala](http://www.scala-lang.org/) and [Haskell](http://www.haskell.org/) to my ruby projects.
 
