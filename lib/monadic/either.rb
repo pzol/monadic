@@ -1,6 +1,6 @@
 module Monadic
   # @abstract Chains function calls and stops executing if one of them fails.
-  class Either 
+  class Either
     include Monadic::Monad
     def self.chain(initial=nil, &block)
       Either::Chain.new(&block).call(initial)
@@ -12,11 +12,11 @@ module Monadic
       return Success.new(value)
     end
 
-    # Initialize is private, because it always would return an instance of Either, but Success or Failure 
+    # Initialize is private, because it always would return an instance of Either, but Success or Failure
     # are required (Either is abstract).
     private_class_method :new
 
-    # Allows privileged access to the +Either+'s inner value from within a block. 
+    # Allows privileged access to the +Either+'s inner value from within a block.
     # This block should return a +Success+ or +Failure+ itself. It will be coerced into #Either
     # @return [Success, Failure]
     def bind(proc=nil, &block)
@@ -26,14 +26,14 @@ module Monadic
       begin
         Either(call(proc, block))
       rescue StandardError => error
-        Failure(error)      
+        Failure(error)
       end
     end
     alias :>=  :bind
     alias :+   :bind
 
     # If it is a Failure it will return a new Failure with the provided value
-    # @return [Success, Failure] 
+    # @return [Success, Failure]
     def else(value)
       return Failure(value) if failure?
       return self
@@ -53,7 +53,7 @@ module Monadic
       is_a? Failure
     end
 
-    private 
+    private
     def call(proc=nil, block)
       func = (proc || block)
       raise "No block or lambda given" unless func.is_a? Proc
@@ -99,7 +99,7 @@ module Monadic
     module InstanceMethods
       def initialize(value)
         @value = join(value)
-      end 
+      end
     end
   end
 
@@ -115,7 +115,7 @@ module Monadic
     Failure.new(value)
   end
 
-  # Factory method 
+  # Factory method
   # @return [Success]
   def Success(value)
     Success.new(value)
