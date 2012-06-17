@@ -16,7 +16,7 @@ describe Monadic::Either do
   it 'Failure.new and Failure.unit and Failure() return the same' do
     Failure(1).should == Failure.unit(1)
     Failure.new(1).should == Failure.unit(1)
-    
+
     Failure(nil).should == Failure.unit(nil)
     Failure.new(nil).should == Failure.unit(nil)
   end
@@ -64,7 +64,7 @@ describe Monadic::Either do
   class User
     attr :age, :gender, :sobriety
     def self.find(id)
-      case id 
+      case id
       when -1; raise 'invalid user id'
       when  0; nil
       else User.new(id)
@@ -149,7 +149,7 @@ describe Monadic::Either do
 
   it 'passes the result value from the previous call to the next' do
     either = Success(1).
-      >= {|prev| Success(prev + 1) }.     # a block 
+      >= {|prev| Success(prev + 1) }.     # a block
       >= -> prev { Success(prev + 100) }  # lambda/proc
 
     either.should == Success(102)
@@ -160,7 +160,7 @@ describe Monadic::Either do
   end
 
   it 'allows you to use parameterless lambdas (#arity == 0)' do
-    (Success(0) >= 
+    (Success(0) >=
       -> { Success(1) }
     ).should == Success(1)
   end
@@ -198,12 +198,12 @@ describe Monadic::Either do
   end
 
   it 'supports Either.chain' do
-    Either.chain do 
+    Either.chain do
       bind -> { Success(1) }
       bind -> { Success(2) }
     end.should == Success(2)
 
-    Either.chain do 
+    Either.chain do
       bind ->    { Success(1)     }
       bind ->(p) { Success(p + 1) }
     end.should == Success(2)
@@ -215,9 +215,9 @@ describe Monadic::Either do
 
   it 'README example' do
     params = { :path => 'foo' }
-    def load_file(path); 
+    def load_file(path);
       fail "invalid path" unless path
-      Success("bar"); 
+      Success("bar");
     end
     def process_content(content); content.start_with?('b') ? Success(content.upcase) : Failure('invalid content'); end
 

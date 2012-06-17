@@ -8,7 +8,7 @@ describe Monadic::Validation do
     def validate(person)
       check_age = ->(age_expr) {
         age = age_expr.to_i
-        case 
+        case
         when age <=  0; Failure('Age must be > 0')
         when age > 130; Failure('Age must be < 130')
         else Success(age)
@@ -20,13 +20,13 @@ describe Monadic::Validation do
         when :sober, :tipsy; Success(sobriety)
         when :drunk        ; Failure('No drunks allowed')
         else Failure("Sobriety state '#{sobriety}' is not allowed")
-        end 
+        end
       }
 
       check_gender = ->(gender) {
         gender == :male || gender == :female ? Success(gender) : Failure("Invalid gender #{gender}")
       }
-        
+
       Validation() do
         check { check_age.(person.age);          }
         check { check_sobriety.(person.sobriety) }

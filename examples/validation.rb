@@ -5,7 +5,7 @@ class AgeTooHighError < ArgumentError; end
 
 valid_age = ->(age_expr) {
   age = age_expr.to_i
-  case 
+  case
   when age <=  0; Failure(AgeTooLowError.new(age_expr))
   when age > 130; Failure(AgeTooHighError.new(age_expr))
   else Success(age)
@@ -13,7 +13,7 @@ valid_age = ->(age_expr) {
 }
 
 valid_name = ->(name) {
-  case 
+  case
   when name =~ /\w{3,99}/i; Success(name)
   else Failure('Invalid name')
   end
