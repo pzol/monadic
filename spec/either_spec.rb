@@ -56,9 +56,14 @@ describe Monadic::Either do
   it '#else returns an alternative value considered Success if it is Nothing' do
     Failure(false).else(true).should == Failure(true)
     Either(nil).else(true).should == Failure(true)
+    Failure(1).else(nil).should == Failure(nil)
     Success(true).else(false).should == Success(true)
     Either(true).else(false).should == Success(true)
     Success(false).else(true).should == Success(false)
+  end
+
+  it '#else with a block gets the original value passed' do
+    (Failure(1).else { |other| other + 1 }).should == Failure(2)
   end
 
   class User

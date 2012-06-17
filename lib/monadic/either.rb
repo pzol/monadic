@@ -34,7 +34,8 @@ module Monadic
 
     # If it is a Failure it will return a new Failure with the provided value
     # @return [Success, Failure]
-    def else(value)
+    def else(value=nil, &block)
+      return Failure(block.call(@value)) if failure? && block_given?
       return Failure(value) if failure?
       return self
     end

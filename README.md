@@ -3,7 +3,7 @@
 
 helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in [Scala](http://www.scala-lang.org/) and [Haskell](http://www.haskell.org/) to my ruby projects.
 
-My motivation to create this gem was that I often work with nested Hashes and need to reach deeply inside of them so my code is sprinkled with things like some_hash.fetch(:one, {}).fetch(:two, {}).fetch(:three, "unknown"). 
+My motivation to create this gem was that I often work with nested Hashes and need to reach deeply inside of them so my code is sprinkled with things like some_hash.fetch(:one, {}).fetch(:two, {}).fetch(:three, "unknown").  
 
 We have the following monadics (monads, functors, applicatives and variations):
 
@@ -13,7 +13,7 @@ We have the following monadics (monads, functors, applicatives and variations):
 
 What's the point of using monads in ruby? To me it started with having a safe way to deal with nil objects and other exceptions.
 Thus you contain the erroneous behaviour within a monad - an indivisible, impenetrable unit. Functional programming considers _throwing_ exceptions to be a side-effect, instead we _propagate_ exceptions, i.e. return them as a result of a function call.
- 
+
 A monad is most effectively described as a computation that eventually returns a value. -- Wolfgang De Meuter
 
 ## Usage
@@ -50,7 +50,7 @@ Maybe(nil).empty?           == true
 Maybe(nil).truly?           == false
 
 # Just stays Just, unless you unbox it
-Maybe('FOO').downcase       == Just('foo') 
+Maybe('FOO').downcase       == Just('foo')
 Maybe('FOO').downcase.fetch == "foo"          # unboxing the value
 Maybe('FOO').downcase._     == "foo"          
 Maybe('foo').empty?         == false          # always non-empty
@@ -215,6 +215,12 @@ Either(false == true).else('false was not true')          == Failure(false was n
 Success('truth needs no sugar coating').else('all lies')  == Success('truth needs no sugar coating')
 ```
 
+`Either#else` supports also a block
+
+```ruby
+Failure(1).else {|other| 1 + 2 }                          == Failure(3)
+```
+
 Storing intermediate results in instance variables is possible, although it is not very elegant:
 
 ```ruby
@@ -225,9 +231,20 @@ result = Either.chain do
 end
 
 result == Success(101)
-```    
+```  
 
-### Validation 
+#### Try
+
+`Try` helper which works similar to Either, but takes a block
+
+```ruby
+Try { Date.parse('2012-02-30') }                                        == Failure
+Try { Date.parse('2012-02-28') }                                        == Success
+Try { Date.parse('2012-02-30') }.else {|e| "Exception: #{e.message}" }  == Failure("Exception: invalid date")
+```
+
+
+### Validation
 The Validation applicative functor, takes a list of checks within a block. Each check must return either Success of Failure.  
 If Successful, it will return Success, if not a Failure monad, containing a list of failures.  
 Within the Failure() provide the reason why the check failed.
@@ -238,7 +255,7 @@ Example:
 def validate(person)
   check_age = ->(age_expr) {
     age = age_expr.to_i
-    case 
+    case
     when age <=  0; Failure('Age must be > 0')
     when age > 130; Failure('Age must be < 130')
     else Success(age)
@@ -267,16 +284,16 @@ end
 
 The above example, returns either `Success([32, :sober, :male])` or `Failure(['Age must be > 0', 'No drunks allowed'])` with a list of what went wrong during the validation.
 
-See also [examples/validation.rb](https://github.com/pzol/monadic/blob/master/examples/validation.rb) and [examples/validation_module](https://github.com/pzol/monadic/blob/master/examples/validation_module.rb) 
+See also [examples/validation.rb](https://github.com/pzol/monadic/blob/master/examples/validation.rb) and [examples/validation_module](https://github.com/pzol/monadic/blob/master/examples/validation_module.rb)  
 
-### Monad 
+### Monad
 All Monads include this module. Standalone it is an Identity monad. Not useful on its own. It's methods are usable on all its descendants.
 
 __#map__ is used to map the inner value
 
 ```ruby
 # minimum implementation of a monad
-class Identity 
+class Identity
   include Monadic::Monad
   def self.unit(value)
     new(value)
