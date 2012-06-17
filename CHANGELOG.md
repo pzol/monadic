@@ -2,7 +2,15 @@
 
 ## v0.5.0
 
-`Monad#to_s` uses `Object#inspect` to show the inner value, thus `Success(some string)` becomes `Success("some string")`, should remain unchanged otherwise.
+Add the `Try` helper which works similar to Either, but takes a block
+
+    Try { Date.parse('2012-02-30') }       == Failure
+    Try { Date.parse('2012-02-28') }       == Success
+
+`Either` else now supports also a block
+
+    Failure(1).else {|other| 1 + 2 }       == Failure(3)
+
 ## v0.4.0
 `#or` returns for Nothing an alternative
 
