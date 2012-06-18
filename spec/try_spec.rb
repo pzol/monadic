@@ -14,14 +14,25 @@ describe 'Monadic::Try' do
     Try { [] }.should be_a Failure
   end
 
-  it 'without a block it works like Either' do
+  it 'with a param, without a block it returns the predicate' do
     Try(true).should be_a Success
     Try(false).should be_a Failure
     Try(nil).should be_a Failure
   end
 
-  it 'with a proc' do
-    pending
+  it 'with a param and with a block it returns the block result' do
+    Try(true)  { 1 }.should == Success(1)
+    Try(false) { 2 }.should == Failure(2)
+    Try(false) { 1 }.else { 2 }.should == Failure(2)
+  end
+
+  it 'with a proc and no block it evaluates the proc' do
+    Try(-> { 1 }).should == Success(1)
+    Try(-> { 1 }) { 2 }.should == Success(2)
+  end
+
+  it 'no params is the same as passing nil as the predicatea' do
+    Try().should == Failure(nil)
   end
 
   it 'returns Success for non-nil values' do

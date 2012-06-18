@@ -3,7 +3,7 @@
 
 helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in [Scala](http://www.scala-lang.org/) and [Haskell](http://www.haskell.org/) to my ruby projects.
 
-My motivation to create this gem was that I often work with nested Hashes and need to reach deeply inside of them so my code is sprinkled with things like some_hash.fetch(:one, {}).fetch(:two, {}).fetch(:three, "unknown").  
+My motivation to create this gem was that I often work with nested Hashes and need to reach deeply inside of them so my code is sprinkled with things like some_hash.fetch(:one, {}).fetch(:two, {}).fetch(:three, "unknown").
 
 We have the following monadics (monads, functors, applicatives and variations):
 
@@ -21,11 +21,11 @@ A monad is most effectively described as a computation that eventually returns a
 ### Maybe
 Most people probably will be interested in the Maybe monad, as it solves the problem with nil invocations, similar to [andand](https://github.com/raganwald/andand) and others.
 
-Maybe is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Maybe, stays in the Maybe'. 
+Maybe is an optional type, which helps to handle error conditions gracefully. The one thing to remember about option is: 'What goes into the Maybe, stays in the Maybe'.
 
 
 ```ruby
-Maybe(User.find(123)).name._         # ._ is a shortcut for .fetch 
+Maybe(User.find(123)).name._         # ._ is a shortcut for .fetch
 
 # if you prefer the alias Maybe instead of option
 Maybe(User.find(123)).name._
@@ -52,7 +52,7 @@ Maybe(nil).truly?           == false
 # Just stays Just, unless you unbox it
 Maybe('FOO').downcase       == Just('foo')
 Maybe('FOO').downcase.fetch == "foo"          # unboxing the value
-Maybe('FOO').downcase._     == "foo"          
+Maybe('FOO').downcase._     == "foo"
 Maybe('foo').empty?         == false          # always non-empty
 Maybe('foo').truly?         == true           # depends on the boxed value
 Maybe(false).empty?         == false
@@ -60,8 +60,8 @@ Maybe(false).truly?         == false
 ```
 
 Map, select:
-    
-```ruby    
+
+```ruby
 Maybe(123).map   { |value| User.find(value) } == Just(someUser)      # if user found
 Maybe(0).map     { |value| User.find(value) } == Nothing             # if user not found
 Maybe([1,2]).map { |value| value.to_s }       == Just(["1, 2"])      # for all Enumerables
@@ -158,11 +158,11 @@ The `Either()` wrapper works like a coercon. It will treat all falsey values `ni
 ```ruby
 result = parse_and_validate_params(params).                 # must return a Success or Failure inside
             bind ->(user_id) { User.find(user_id) }.        # if #find returns null it will become a Failure
-            bind ->(user)    { authorized?(user); user }.   # if authorized? raises an Exception, it will be a Failure 
+            bind ->(user)    { authorized?(user); user }.   # if authorized? raises an Exception, it will be a Failure
             bind ->(user)    { UserDecorator(user) }
 
 if result.success?
-  @user = result.fetch                                      # result.fetch or result._ contains the 
+  @user = result.fetch                                      # result.fetch or result._ contains the inner value
   render 'page'
 else
   @error = result.fetch
@@ -205,7 +205,7 @@ Another example:
 ```ruby
 Success(params).
   bind ->(params)   { Either(params.fetch(:path)) }        # fails if params does not contain :path
-  bind ->(path)     { load_stuff(params)          }        # 
+  bind ->(path)     { load_stuff(params)          }        #
 ```
 
 `Either#else` allows to provide alternate values in case of `Failure`:
@@ -231,18 +231,29 @@ result = Either.chain do
 end
 
 result == Success(101)
-```  
+```
 
 #### Try
 
-`Try` helper which works similar to Either, but takes a block
+`Try` helper which works similar to Either, but takes a block. Think of it as a secure if-then-else.
 
 ```ruby
 Try { Date.parse('2012-02-30') }                                        == Failure
 Try { Date.parse('2012-02-28') }                                        == Success
-Try { Date.parse('2012-02-30') }.else {|e| "Exception: #{e.message}" }  == Failure("Exception: invalid date")
-```
 
+date_s = '2012-02-30'
+Try { Date.parse(date_s) }.else {|e| "#{e.message} #{date_s}" }        == Failure("invalid date 2012-02-30")
+
+# with a predicate
+Try(true)                                                               == Success(true)
+Try(false) { "string" }                                                 == Failure("string")
+Try(false) { "success"}.else("fail")                                    == Failure("fail")
+
+VALID_TITLES = %w[MR MRS]
+title = 'MS'
+Try(VALID_TITLES.inlude?(title)) { title }.else { "title must be on of '#{VALID_TITLES.join(', ')}'' but was '#{title}'"}
+                                                                        == "title must be on of 'MR, MR' but was 'MS'"
+```
 
 ### Validation
 The Validation applicative functor, takes a list of checks within a block. Each check must return either Success of Failure.  
@@ -267,13 +278,13 @@ def validate(person)
     when :sober, :tipsy; Success(sobriety)
     when :drunk        ; Failure('No drunks allowed')
     else Failure("Sobriety state '#{sobriety}' is not allowed")
-    end 
+    end
   }
 
   check_gender = ->(gender) {
     gender == :male || gender == :female ? Success(gender) : Failure("Invalid gender #{gender}")
   }
-    
+
   Validation() do
     check { check_age.(person.age);          }
     check { check_sobriety.(person.sobriety) }
@@ -306,8 +317,8 @@ Identity.unit([1,2]).map {|v| v + 1}                             == Identity([2,
 
 __#bind__ allows (priviledged) access to the boxed value. This is the traditional _no-magic_ `#bind` as found in Haskell, 
 You` are responsible for re-wrapping the value into a Monad again.
-  
-```ruby  
+
+```ruby
 # due to the way it works, it will simply return the value, don't rely on this though, different Monads may
 # implement bind differently (e.g. Maybe involves some _magic_)
 Identity.unit('foo').bind(&:capitalize)                          == Foo
@@ -356,8 +367,8 @@ Or install it yourself as:
     $ gem install monadic
 
 ## Compatibility
-Monadic is tested under ruby MRI 1.9.2, 1.9.3, jruby 1.9 mode, rbx 1.9 mode.
-
+Monadic is tested under ruby MRI 1.9.2, 1.9.3
+jruby 1.9 mode, rbx 1.9 mode are currently not passing the tests on travis
 
 ## Contributing
 
