@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.6 (unreleased)
+## v0.6
 
 Extend `Try` to also support lambdas.
 
