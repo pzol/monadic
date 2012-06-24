@@ -7,10 +7,15 @@ describe Monadic::Maybe do
 
   it 'Maybe cannot be created using #new, use #unit instead' do
     expect { Maybe.new(1) }.to raise_error NoMethodError
-  end 
+  end
 
   it 'nil as value always returns Nothing()' do
      Maybe(nil).a.b.c.should == Nothing
+  end
+
+  it 'Maybe(Just) should return Just' do
+    Maybe(Just(nil)).should == Just(nil)
+    Maybe(Nothing).should == Nothing
   end
 
   it 'on non-existant methods, returns Nothing' do
@@ -55,6 +60,10 @@ describe Monadic::Maybe do
 
     it 'Nothing#or returns the alternative' do
       Maybe(nil).or(1).should == Just(1)
+      Nothing.or(1).should == Just(1)
+      Nothing.or(Just(nil)).should == Just(nil)
+      Nothing.something.or(1).should == Just(1)
+      Nothing.something.or(Just(nil)).should == Just(nil)
     end
   end
 
@@ -64,7 +73,7 @@ describe Monadic::Maybe do
     end
 
     it 'Just stays Just' do
-      Maybe('foo').should be_kind_of(Just) 
+      Maybe('foo').should be_kind_of(Just)
       Maybe('foo').empty?.should be_false
     end
 
@@ -75,8 +84,8 @@ describe Monadic::Maybe do
 
     it 'Just#or return self' do
       Maybe(1).or(2).should              == Just(1)
-      Maybe(nil).or(nil).should          == Just.new(nil)
-      Maybe(nil).something.or('').fetch.should == ''
+      Maybe(nil).or(nil).should          == Nothing
+      Maybe(nil).something.or(Just('')).fetch.should == Just('')
     end
 
     it 'Just#inspect returns Just(value)' do

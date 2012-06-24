@@ -80,13 +80,12 @@ module Monadic
         self
       end
 
-      # @return an alternative value, the passed value is NOT coerced into Maybe, thus Nothing.or(nil) will be Just(nil)
+      # @return an alternative value, the passed value is coerced into Maybe, thus Nothing.or(1) will be Just(1)
       def or(other)
-        Just.new(other)
+        Maybe.unit(other)
       end
 
       # def respond_to?
-
       # end
 
       def to_ary
@@ -100,6 +99,10 @@ module Monadic
 
       def truly?
         false
+      end
+
+      def empty?
+        true
       end
     end
   end
