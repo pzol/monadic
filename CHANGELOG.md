@@ -16,6 +16,16 @@ The first parameter of `Try` can be used as a predicate and the block as formatt
     # this is in effect syntactic sugar for
     Maybe({a: 1}).map {|e| e.fetch(:a) }
 
+`Nothing#or` coerces the or value into a Maybe, thus
+
+    Maybe(nil).or(1)          == Just(1)
+    Maybe(nil).or(nil)        == Nothing
+
+`Either` coerces now `Just` and `Nothing` into `Success` and `Failure`
+
+    Either(Just.new(1))       == Success(1)
+    Either(Nothing)           == Failure(Nothing)
+
 ## v0.5.0
 
 Add the `Try` helper which works similar to Either, but takes a block
