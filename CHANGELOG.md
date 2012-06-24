@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.6 (unreleased)
+
+Extend `Try` to also support lambdas.
+
+The first parameter of `Try` can be used as a predicate and the block as formatter
+
+    Try(true)                              == Success(true)
+    Try(false) { "string" }                == Failure("string")
+    Try(false) { "success" }.else("fail")  == Failure("fail")
+
+`Maybe` supports `#proxy` to avoid naming clashes between the underlying value and `Maybe` itself.
+
+    Maybe({a: 1}).proxy.fetch(:a)          == Maybe(1)
+    # this is in effect syntactic sugar for
+    Maybe({a: 1}).map {|e| e.fetch(:a) }
+
 ## v0.5.0
 
 Add the `Try` helper which works similar to Either, but takes a block
@@ -38,7 +54,7 @@ Instead the new `Monad#flat_map` function operates on the underlying value as on
 ## v0.1.1
 
 `Either()` coerces only `StandardError` to `Failure`, other exceptions higher in the hierarchy are will break the flow.  
-Thanks to @pithyless for the suggestion. 
+Thanks to @pithyless for the suggestion.
 
 Monad is now a Module instead of a Class as previously. This fits the Monad metaphor better. Each monad must now implement the unit method itself, which is the correct way to do anyway.
 
@@ -60,7 +76,7 @@ See [examples/validation.rb](https://github.com/pzol/monadic/blob/master/example
 and [examples/validation_module](https://github.com/pzol/monadic/blob/master/examples/validation_module.rb)
 
 
-## v0.0.7 
+## v0.0.7
 
 Implements the #map method for all Monads. It works on value types and on Enumerable collections.  
 Provide a proc or a block and it will return a transformed value or collection boxed back in the monad.
@@ -88,7 +104,7 @@ Removed `Maybe#fetch` call with block`
 Added Travis-Ci integration, [![Build Status](https://secure.travis-ci.org/pzol/monadic.png?branch=master)](http://travis-ci.org/pzol/monadic)
 
 
-## v0.0.5 
+## v0.0.5
 
 Removed the `#chain` method alias for bind in `Either`.
 

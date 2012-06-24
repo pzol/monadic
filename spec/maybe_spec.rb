@@ -26,7 +26,7 @@ describe Monadic::Maybe do
       Maybe(nil).fetch.should == Nothing
       Maybe(nil)._.should == Nothing
       Maybe(nil).empty?.should be_true
-    end  
+    end
 
     it 'Nothing#to_s is "Nothing"' do
       option = Maybe(nil)
@@ -163,7 +163,12 @@ describe Monadic::Maybe do
 
     format_date_in_march(nil).should == "not in march!"
     format_date_in_march(Time.parse('2009-01-01 01:02')).should == "not in march!"
-    format_date_in_march(Time.parse('2011-03-21 12:34')).should == "20110321"    
+    format_date_in_march(Time.parse('2011-03-21 12:34')).should == "20110321"
   end
 
+  it 'delegates method calls with #proxy' do
+    Maybe({a: 1}).proxy.fetch(:a).should == Maybe(1)
+    Maybe("FOO").proxy.downcase.capitalize.should == Maybe("Foo")
+    Maybe(nil).proxy.downcase.capitalize.bar.should == Nothing
+  end
 end

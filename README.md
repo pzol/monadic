@@ -110,6 +110,14 @@ Remember! a Maybe is never false (in Ruby terms), if you want to know if it is f
 
 `#truly?` will return true or false, always.
 
+`Maybe` supports `#proxy` to avoid naming clashes between the underlying value and `Maybe` itself.
+
+```ruby
+Maybe({a: 1}).proxy.fetch(:a)          == Maybe(1)
+# this is in effect syntactic sugar for
+Maybe({a: 1}).map {|e| e.fetch(:a) }
+```
+
 Slug example
 
 ```ruby

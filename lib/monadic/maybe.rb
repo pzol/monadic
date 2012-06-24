@@ -1,13 +1,13 @@
 module Monadic
-  class Maybe 
+  class Maybe
     include Monadic::Monad
-    
+
     def self.unit(value)
       return Nothing if value.nil? || (value.respond_to?(:empty?) && value.empty?)
       return Just.new(value)
     end
 
-    # Initialize is private, because it always would return an instance of Maybe, but Just or Nothing 
+    # Initialize is private, because it always would return an instance of Maybe, but Just or Nothing
     # are required (Maybe is abstract).
     private_class_method :new
 
@@ -42,6 +42,20 @@ module Monadic
 
     def method_missing(m, *args)
       Maybe(@value.__send__(m, *args))
+    end
+
+    class Proxy < BasicObject
+      def initialize(maybe)
+        @maybe = maybe
+      end
+
+      def method_missing(m, *args)
+        @maybe.map { |e| e.__send__(m, *args)  }
+      end
+    end
+
+    def proxy
+      @proxy ||= Proxy.new(self)
     end
 
     # @return always self for Just
