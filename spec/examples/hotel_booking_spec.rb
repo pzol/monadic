@@ -119,7 +119,8 @@ describe 'Hotel Booking Example' do
     request.hotel_code.should == Failure("hotel_code must be of pattern XXX0001, got ''")
     request.nights.should     == Failure("nights must be a number greater than 0, got ''")
     request.room_type.should  == Failure("room_type must be one of 'SR, DR, TR, QR', got ''")
-    request.check_in.should   == Failure("check_in can't convert nil into String, got ''")
+    request.check_in.should be_a Failure
+    request.check_in.fetch.should =~ /check_in.*, got ''/
     request.guests.should     == Failure("guests number must match the room_type '':99, got 0: ''")
   end
 
