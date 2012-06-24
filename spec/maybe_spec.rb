@@ -70,6 +70,7 @@ describe Monadic::Maybe do
 
     it 'Just#to_s is "value"' do
       Just.unit(123).to_s.should == "Just(123)"
+      Just("4fe48bcfcf79520644088180").to_s.should == 'Just("4fe48bcfcf79520644088180")'
     end
 
     it 'Just#or return self' do
