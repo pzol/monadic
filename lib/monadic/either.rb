@@ -8,7 +8,9 @@ module Monadic
 
     def self.unit(value)
       return value if value.is_a? Either
-      return Failure.new(value) if value.nil? || (value.respond_to?(:empty?) && value.empty?) || !value
+      return Nothing                  if value.is_a? Nothing
+      return Success.new(value.fetch) if value.is_a? Just
+      return Failure.new(value)       if value.nil? || (value.respond_to?(:empty?) && value.empty?) || !value
       return Success.new(value)
     end
 

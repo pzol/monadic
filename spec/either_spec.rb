@@ -39,6 +39,10 @@ describe Monadic::Either do
     Failure(1).should_not == Failure(2)
   end
 
+  it 'Either(Nothing) is a Failure' do
+    Either(Nothing).should == Failure(Nothing)
+  end
+
   it 'wraps a nil result to Failure' do
     Success(nil).bind { nil }.should == Failure(nil)
   end
@@ -239,6 +243,14 @@ describe Monadic::Either do
               bind {|content| process_content(content) }
     either.should be_a_failure
     either.fetch.should be_a KeyError
+  end
+
+  it 'Either(Nothing) returns a Failure' do
+    Either(Nothing).should == Failure(Nothing)
+  end
+
+  it 'Either(Just) returns a Success' do
+    Either(Just.new(1)).should == Success(1)
   end
 
   it 'instance variables' do
