@@ -29,5 +29,17 @@ module Monadic
       # @failure.fetch << result.fetch) if result.failure?
       @result << result
     end
+
+    # Useful to populate a data structure like a Struct, which takes values in its constructor
+    def self.fill(obj, params, validator)
+      properties = validator.methods - Module.methods
+      values = properties.collect {|property| validator.send(property, params) }
+
+      if values.all?(&:success?)
+        Success(obj.new(*values.collect(&:fetch)))
+      else
+        Failure(obj.new(*values))
+      end
+    end
   end
 end

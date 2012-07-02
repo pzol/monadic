@@ -306,6 +306,22 @@ The above example, returns either `Success([32, :sober, :male])` or `Failure(['A
 
 See also [examples/validation.rb](https://github.com/pzol/monadic/blob/master/examples/validation.rb) and [examples/validation_module](https://github.com/pzol/monadic/blob/master/examples/validation_module.rb)  
 
+`Validation#fill` method for validating filling Structs:
+
+```ruby
+ExampleStruct = Struct.new(:a, :b)
+module ExampleValidator
+  extend self
+  def a(params); Try { params[0] }.or 'a cannot be empty'; end
+  def b(params); Try { params[1] }.or 'b cannot be empty'; end
+end
+
+result = Validation.fill(ExampleStruct, [1, 2], ExampleValidator)         == Sucess
+example = result.fetch
+example.a  == 1
+example.b  == 2
+```
+
 ### Monad
 All Monads include this module. Standalone it is an Identity monad. Not useful on its own. It's methods are usable on all its descendants.
 
