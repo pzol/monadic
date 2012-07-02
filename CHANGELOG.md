@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.7
+**BREAKING CHANGES**
+
+Rename `Either#else` to `Either#or` to be consistent with `Maybe`
+Using `Either#else` will give you a deprecation warning for now, it will be removed in v1.0
+
+New `Validation#fill` method for validating filling Structs.
+
+    ExampleStruct = Struct.new(:a, :b)
+    module ExampleValidator
+      extend self
+      def a(params); Try { params[0] }.or 'a cannot be empty'; end
+      def b(params); Try { params[1] }.or 'b cannot be empty'; end
+    end
+
+    result = Validation.fill(ExampleStruct, [1, 2], ExampleValidator)         == Sucess
+    example = result.fetch
+    example.a  == 1
+    example.b  == 2
+
 ## v0.6
 
 Extend `Try` to also support lambdas.
