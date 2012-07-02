@@ -36,7 +36,15 @@ module Monadic
 
     # If it is a Failure it will return a new Failure with the provided value
     # @return [Success, Failure]
+    def or(value=nil, &block)
+      return Failure(block.call(@value)) if failure? && block_given?
+      return Failure(value) if failure?
+      return self
+    end
+
+    #@deprecated
     def else(value=nil, &block)
+      warn 'Either#else is deprecated and will be removed in a future version, use Either#or instead'
       return Failure(block.call(@value)) if failure? && block_given?
       return Failure(value) if failure?
       return self
@@ -83,6 +91,7 @@ module Monadic
     def bind(proc=nil, &block)
       @chain << (proc || block)
     end
+    alias :>= :bind
   end
 
   # @private instance and class methods for +Success+ and +Failure+

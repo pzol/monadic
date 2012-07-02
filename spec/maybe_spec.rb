@@ -64,6 +64,7 @@ describe Monadic::Maybe do
       Nothing.or(Just(nil)).should == Just(nil)
       Nothing.something.or(1).should == Just(1)
       Nothing.something.or(Just(nil)).should == Just(nil)
+      Nothing.or('').should == Just('')
     end
   end
 

@@ -23,7 +23,7 @@ describe 'Monadic::Try' do
   it 'with a param and with a block it returns the block result' do
     Try(true)  { 1 }.should == Success(1)
     Try(false) { 2 }.should == Failure(2)
-    Try(false) { 1 }.else { 2 }.should == Failure(2)
+    Try(false) { 1 }.or { 2 }.should == Failure(2)
   end
 
   it 'with a proc and no block it evaluates the proc' do
@@ -40,8 +40,8 @@ describe 'Monadic::Try' do
     Try { "string" }.should == Success("string")
   end
 
-  it 'combined with else and a block' do
-    Try { Date.parse('2012-02-30') }.else {|e| "Exception: #{e.message}" }.should == Failure("Exception: invalid date")
-    Try { Date.parse('2012-02-28') }.else {|e| "Exception: #{e.message}" }.should == Success(Date.parse('2012-02-28'))
+  it 'combined with or and a block' do
+    Try { Date.parse('2012-02-30') }.or {|e| "Exception: #{e.message}" }.should == Failure("Exception: invalid date")
+    Try { Date.parse('2012-02-28') }.or {|e| "Exception: #{e.message}" }.should == Success(Date.parse('2012-02-28'))
   end
 end

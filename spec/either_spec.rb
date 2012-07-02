@@ -57,17 +57,17 @@ describe Monadic::Either do
     error.message.should == 'error'
   end
 
-  it '#else returns an alternative value considered Success if it is Nothing' do
-    Failure(false).else(true).should == Failure(true)
-    Either(nil).else(true).should == Failure(true)
-    Failure(1).else(nil).should == Failure(nil)
-    Success(true).else(false).should == Success(true)
-    Either(true).else(false).should == Success(true)
-    Success(false).else(true).should == Success(false)
+  it '#or returns an alternative value considered Success if it is Nothing' do
+    Failure(false).or(true).should == Failure(true)
+    Either(nil).or(true).should == Failure(true)
+    Failure(1).or(nil).should == Failure(nil)
+    Success(true).or(false).should == Success(true)
+    Either(true).or(false).should == Success(true)
+    Success(false).or(true).should == Success(false)
   end
 
-  it '#else with a block gets the original value passed' do
-    (Failure(1).else { |other| other + 1 }).should == Failure(2)
+  it '#or with a block gets the original value passed' do
+    (Failure(1).or { |other| other + 1 }).should == Failure(2)
   end
 
   class User

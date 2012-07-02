@@ -217,17 +217,17 @@ Success(params).
   bind ->(path)     { load_stuff(params)          }        #
 ```
 
-`Either#else` allows to provide alternate values in case of `Failure`:
+`Either#or` allows to provide alternate values in case of `Failure`:
 
 ```ruby
-Either(false == true).else('false was not true')          == Failure(false was not true)
-Success('truth needs no sugar coating').else('all lies')  == Success('truth needs no sugar coating')
+Either(false == true).or('false was not true')          == Failure(false was not true)
+Success('truth needs no sugar coating').or('all lies')  == Success('truth needs no sugar coating')
 ```
 
-`Either#else` supports also a block
+`Either#or` supports also a block
 
 ```ruby
-Failure(1).else {|other| 1 + 2 }                          == Failure(3)
+Failure(1).or {|other| 1 + 2 }                          == Failure(3)
 ```
 
 Storing intermediate results in instance variables is possible, although it is not very elegant:
@@ -251,16 +251,16 @@ Try { Date.parse('2012-02-30') }                                        == Failu
 Try { Date.parse('2012-02-28') }                                        == Success
 
 date_s = '2012-02-30'
-Try { Date.parse(date_s) }.else {|e| "#{e.message} #{date_s}" }        == Failure("invalid date 2012-02-30")
+Try { Date.parse(date_s) }.or {|e| "#{e.message} #{date_s}" }        == Failure("invalid date 2012-02-30")
 
 # with a predicate
 Try(true)                                                               == Success(true)
 Try(false) { "string" }                                                 == Failure("string")
-Try(false) { "success"}.else("fail")                                    == Failure("fail")
+Try(false) { "success"}.or("fail")                                    == Failure("fail")
 
 VALID_TITLES = %w[MR MRS]
 title = 'MS'
-Try(VALID_TITLES.inlude?(title)) { title }.else { "title must be on of '#{VALID_TITLES.join(', ')}'' but was '#{title}'"}
+Try(VALID_TITLES.inlude?(title)) { title }.or { "title must be on of '#{VALID_TITLES.join(', ')}'' but was '#{title}'"}
                                                                         == "title must be on of 'MR, MR' but was 'MS'"
 ```
 
