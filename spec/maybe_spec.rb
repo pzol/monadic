@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+
 describe Monadic::Maybe do
   it_behaves_like 'a Monad' do
     let(:monad) { Maybe }
@@ -37,6 +38,7 @@ describe Monadic::Maybe do
       option = Maybe(nil)
       "#{option}".should   == "Nothing"
       Nothing.to_s.should == "Nothing"
+      Nothing.to_s(1, 2).should == "Nothing"
     end
 
     it 'Nothing is always empty' do
@@ -100,10 +102,10 @@ describe Monadic::Maybe do
   end
 
   it 'calling methods on Maybe always returns an Maybe with the transformed value' do
-    Maybe('FOO').downcase.should == Just('foo') 
+    Maybe('FOO').downcase.should == Just('foo')
   end
 
-  it '#fetch returns the value of an option' do 
+  it '#fetch returns the value of an option' do
     Maybe('foo').fetch.should == 'foo'
     Maybe('foo')._.should == 'foo'
   end

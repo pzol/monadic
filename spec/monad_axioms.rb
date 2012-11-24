@@ -15,14 +15,14 @@ shared_examples 'a Monad' do
       end.should == monad.unit(1)
     end
 
-    it '3rd monadic law: associativity' do 
+    it '3rd monadic law: associativity' do
       f = ->(value) { monad.unit(value + 1)   }
-      g = ->(value) { monad.unit(value + 100) }    
+      g = ->(value) { monad.unit(value + 100) }
 
       id1 = monad.unit(1).bind do |a|
         f.(a)
-      end.bind do |b| 
-        g.(b) 
+      end.bind do |b|
+        g.(b)
       end
 
       id2 = monad.unit(1).bind do |a|

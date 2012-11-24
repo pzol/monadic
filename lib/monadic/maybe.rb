@@ -93,7 +93,7 @@ module Monadic
       end
       alias :to_a :to_ary
 
-      def to_s
+      def to_s(*args)
         'Nothing'
       end
 
