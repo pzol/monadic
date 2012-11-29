@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.7.2
+Add `#__fetch__` to `Maybe().proxy` to get the wrapped value.
+
 ## v0.7
 **BREAKING CHANGES**
 
