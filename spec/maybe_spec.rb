@@ -183,5 +183,6 @@ describe Monadic::Maybe do
     Maybe({a: 1}).proxy.fetch(:a).should == Maybe(1)
     Maybe("FOO").proxy.downcase.capitalize.should == Maybe("Foo")
     Maybe(nil).proxy.downcase.capitalize.bar.should == Nothing
+    Maybe({a: 1}).proxy.__fetch__.should == {a: 1}
   end
 end

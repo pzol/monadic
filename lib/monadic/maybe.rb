@@ -52,6 +52,10 @@ module Monadic
       def method_missing(m, *args)
         @maybe.map { |e| e.__send__(m, *args)  }
       end
+
+      def __fetch__
+        @maybe.fetch
+      end
     end
 
     def proxy
