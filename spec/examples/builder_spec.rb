@@ -31,9 +31,9 @@ module Transaction
   def self.fetch(params)
     return Failure('params must be a Hash') unless params.is_a? Hash
 
-    Either(Maybe(params)['id']).else('id is missing').
-      >= {|v| Try { BSONTestConverter.from_string(v) }.else("id '#{v}' is not a valid BSON id") }.
-      >= {|v| Try { DatabaseReader.find(v)           }.else("'#{v}' not found")                 }
+    Either(Maybe(params)['id']).or('id is missing').
+      >= {|v| Try { BSONTestConverter.from_string(v) }.or("id '#{v}' is not a valid BSON id") }.
+      >= {|v| Try { DatabaseReader.find(v)           }.or("'#{v}' not found")                 }
   end
 
   def self.logs(request_id)

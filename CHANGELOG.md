@@ -82,7 +82,7 @@ Instead the new `Monad#flat_map` function operates on the underlying value as on
 `Either#else` allows to exchange the inner value of  `Nothing` to an alternative value.
 
     Either(false == true).else('false was not true')          == Failure(false was not true)
-    Success('truth needs no sugar coating').else('all lies')  == Success('truth needs no sugar coating')
+    Success('truth needs no sugar coating').or('all lies')  == Success('truth needs no sugar coating')
 
 ## v0.1.1
 
