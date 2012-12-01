@@ -28,6 +28,10 @@ describe Monadic::Maybe do
       let(:monad) { Nothing }
     end
 
+    it '===' do
+      (Maybe(nil) === Nothing).should be_true
+    end
+
     it 'Nothing stays Nothing' do
       Maybe(nil).fetch.should == Nothing
       Maybe(nil)._.should == Nothing

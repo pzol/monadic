@@ -108,6 +108,10 @@ module Monadic
       def empty?
         true
       end
+
+      def ===(other)
+        other == Nothing
+      end
     end
   end
 
