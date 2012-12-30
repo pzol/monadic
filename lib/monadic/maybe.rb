@@ -101,6 +101,10 @@ module Monadic
         'Nothing'
       end
 
+      def to_json(*args)
+        'null'
+      end
+
       def truly?
         false
       end

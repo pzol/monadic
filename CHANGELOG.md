@@ -1,4 +1,6 @@
 # Changelog
+## v0.7.4 ##
+`Nothing.to_json` yields `nil`
 
 ## v0.7.3
 Nothing works with `===`
