@@ -26,7 +26,7 @@ module Monadic
 
     # @return [true, false] true if the underlying value is true
     def truly?
-      @value == true
+      !!@value == true
     end
   end
 
