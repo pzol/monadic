@@ -38,6 +38,10 @@ module Monadic
     def fetch(default=nil)
       @value
     end
+
+    def inspect
+      "Just(#{@value.inspect})"
+    end
     alias :_ :fetch
 
     def method_missing(m, *args)
