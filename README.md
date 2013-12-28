@@ -1,6 +1,8 @@
 # Monadic
 [![Build Status](https://secure.travis-ci.org/pzol/monadic.png?branch=master)](http://travis-ci.org/pzol/monadic) [![endorse](http://api.coderwall.com/pzol/endorsecount.png)](http://coderwall.com/pzol)
 
+I am currently working on a successor, currently under the working name [Deterministic](http://github.com/pzol/deterministic). Check it out and let me know your thoughts and wishes.
+
 helps dealing with exceptional situations, it comes from the sphere of functional programming and bringing the goodies I have come to love in [Scala](http://www.scala-lang.org/) and [Haskell](http://www.haskell.org/) to my ruby projects.
 
 My motivation to create this gem was that I often work with nested Hashes and need to reach deeply inside of them so my code is sprinkled with things like some_hash.fetch(:one, {}).fetch(:two, {}).fetch(:three, "unknown").
