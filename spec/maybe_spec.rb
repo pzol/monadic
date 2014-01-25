@@ -44,10 +44,6 @@ describe Monadic::Maybe do
       Maybe(nil).something.or(Just('')).fetch.should == Just('')
     end
 
-    it 'Just#inspect returns Just(value)' do
-      Just(1).inspect.should == 'Just(1)'
-    end
-
     it 'works with method_missing !caution! with Monad.methods like #join' do
       Maybe([1, 2]).join(' ').should == ' '
     end
