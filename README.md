@@ -29,9 +29,6 @@ Maybe is an optional type, which helps to handle error conditions gracefully. Th
 ```ruby
 Maybe(User.find(123)).name._         # ._ is a shortcut for .fetch
 
-# if you prefer the alias Maybe instead of option
-Maybe(User.find(123)).name._
-
 # confidently diving into nested hashes
 Maybe({})[:a][:b][:c]                   == Nothing
 Maybe({})[:a][:b][:c].fetch('unknown')  == "unknown"
@@ -265,7 +262,7 @@ Try(false) { "success"}.or("fail")                                    == Failure
 VALID_TITLES = %w[MR MRS]
 title = 'MS'
 Try(VALID_TITLES.inlude?(title)) { title }.or { "title must be on of '#{VALID_TITLES.join(', ')}'' but was '#{title}'"}
-                                                                        == "title must be on of 'MR, MR' but was 'MS'"
+                                                                        == "title must be on of 'MR, MRS' but was 'MS'"
 ```
 
 ### Validation
@@ -294,19 +291,14 @@ def validate(person)
     end
   }
 
-  check_gender = ->(gender) {
-    gender == :male || gender == :female ? Success(gender) : Failure("Invalid gender #{gender}")
-  }
-
   Validation() do
-    check { check_age.(person.age);          }
+    check { check_age.(person.age)           }
     check { check_sobriety.(person.sobriety) }
-    check { check_gender.(person.gender)     }
   end
 end
 ```
 
-The above example, returns either `Success([32, :sober, :male])` or `Failure(['Age must be > 0', 'No drunks allowed'])` with a list of what went wrong during the validation.
+The above example, returns either `Success([32, :sober])` or `Failure(['Age must be > 0', 'No drunks allowed'])` with a list of what went wrong during the validation.
 
 See also [examples/validation.rb](https://github.com/pzol/monadic/blob/master/examples/validation.rb) and [examples/validation_module](https://github.com/pzol/monadic/blob/master/examples/validation_module.rb)  
 
