@@ -53,5 +53,7 @@ require 'spec_helper'
       Nothing.something.or(1).should == Just(1)
       Nothing.something.or(Just(nil)).should == Just(nil)
       Nothing.or('').should == Just('')
+
+      Nothing.or_lazy { 1 }.should == Just(1)
     end
   end
