@@ -92,7 +92,6 @@ Maybe(1).to_s             == '1'
 ```ruby
 Maybe(nil).or(1)          == Just(1)
 Maybe(1).or(2)            == Just(1)
-Maybe(nil).or(1)          == Just(1)
 Maybe(nil).or(nil)        == Nothing
 ```
 
