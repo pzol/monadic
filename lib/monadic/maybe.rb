@@ -116,6 +116,10 @@ module Monadic
       def ===(other)
         other == Nothing
       end
+
+      def coerce(other)
+        raise TypeError
+      end
     end
   end
 
