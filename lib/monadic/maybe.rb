@@ -118,7 +118,7 @@ module Monadic
       end
 
       def coerce(other)
-        raise TypeError
+        nil
       end
     end
   end
