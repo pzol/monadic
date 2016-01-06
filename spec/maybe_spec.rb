@@ -42,6 +42,9 @@ describe Monadic::Maybe do
       Maybe(1).or(2).should              == Just(1)
       Maybe(nil).or(nil).should          == Nothing
       Maybe(nil).something.or(Just('')).fetch.should == Just('')
+
+      Maybe(1).or_lazy { 2 }.should           == Just(1)
+      Maybe(nil).or_lazy { 2 }.should         == Just(2)
     end
 
     it 'works with method_missing !caution! with Monad.methods like #join' do

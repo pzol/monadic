@@ -66,6 +66,11 @@ module Monadic
     def or(other)
       self
     end
+
+    # @return always self for Just
+    def or_lazy
+      self
+    end
   end
 
   # Represents a NullObject
@@ -87,6 +92,11 @@ module Monadic
       # @return an alternative value, the passed value is coerced into Maybe, thus Nothing.or(1) will be Just(1)
       def or(other)
         Maybe.unit(other)
+      end
+
+      # @return an alternative value lazily, the passed value is coerced into Maybe, thus Nothing.or(1) will be Just(1)
+      def or_lazy
+        Maybe.unit(yield)
       end
 
       # def respond_to?
