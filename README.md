@@ -278,7 +278,7 @@ def validate(person)
     age = age_expr.to_i
     case
     when age <=  0; Failure('Age must be > 0')
-    when age > 130; Failure('Age must be < 130')
+    when age >= 130; Failure('Age must be < 130')
     else Success(age)
     end
   }
