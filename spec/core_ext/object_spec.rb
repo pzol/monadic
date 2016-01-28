@@ -7,5 +7,6 @@ describe 'pseudo Elvis operator _?' do
     "foo"._?.should  == 'foo'
     {}._?.a.b.should == Nothing
     {}._?[:foo]      == Nothing
+    Maybe(nil).fetch_value
   end
 end

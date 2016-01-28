@@ -6,13 +6,22 @@ require 'spec_helper'
     end
 
     it '===' do
-      (Maybe(nil) === Nothing).should be_true
+      (Maybe(nil) === Nothing).should be true
     end
 
-    it 'Nothing stays Nothing' do
+    it 'is empty' do
+      Maybe(nil).empty?.should be true
+    end
+
+    it 'returns Nothing' do
       Maybe(nil).fetch.should == Nothing
       Maybe(nil)._.should == Nothing
-      Maybe(nil).empty?.should be_true
+    end
+
+    it 'fetches a nil value' do
+      Maybe(nil).fetch(nil).should == nil
+      Maybe(nil)._(nil).should == nil
+      Maybe(nil)._('').should == ''
     end
 
     it 'Nothing#to_s is "Nothing"' do
@@ -28,8 +37,8 @@ require 'spec_helper'
     end
 
     it 'Nothing is always empty' do
-      Nothing.empty?.should be_true
-      Maybe(nil).empty?.should be_true
+      Nothing.empty?.should be true
+      Maybe(nil).empty?.should be true
     end
 
     it '[] as value always returns Nothing()' do
@@ -37,8 +46,8 @@ require 'spec_helper'
     end
 
     it 'is always empty and false' do
-      Nothing.empty?.should be_true
-      Nothing.truly?.should be_false
+      Nothing.empty?.should be true
+      Nothing.truly?.should be false
     end
 
     it 'returns Nothing when calling #name' do

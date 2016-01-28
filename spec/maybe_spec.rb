@@ -21,7 +21,7 @@ describe Monadic::Maybe do
 
   it 'on non-existant methods, returns Nothing' do
     Maybe({}).a.b.c.should == Nothing
-  end 
+  end
 
   describe Monadic::Just do
     it_behaves_like 'a Monad' do
@@ -30,7 +30,7 @@ describe Monadic::Maybe do
 
     it 'Just stays Just' do
       Maybe('foo').should be_kind_of(Just)
-      Maybe('foo').empty?.should be_false
+      Maybe('foo').empty?.should be false
     end
 
     it 'Just#to_s is "value"' do
@@ -41,7 +41,7 @@ describe Monadic::Maybe do
     it 'Just#or return self' do
       Maybe(1).or(2).should              == Just(1)
       Maybe(nil).or(nil).should          == Nothing
-      Maybe(nil).something.or(Just('')).fetch.should == Just('')
+      Maybe(nil).or(Just('')).fetch.should == Just('')
     end
 
     it 'works with method_missing !caution! with Monad.methods like #join' do
@@ -70,22 +70,22 @@ describe Monadic::Maybe do
   end
 
   it 'is never falsey' do
-    Maybe('foo').should_not be_false
-    Maybe(nil).should_not be_false
-    Maybe(false).truly?.should be_false
-    Maybe(true).truly?.should be_true
-    Maybe(nil).truly?.should be_false
+    Maybe('foo').should_not be false
+    Maybe(nil).should_not be false
+    Maybe(false).truly?.should be false
+    Maybe(true).truly?.should be true
+    Maybe(nil).truly?.should be false
   end
 
   it 'handles (kind-of) falsey values' do
     FalseyUser = Struct.new(:name, :subscribed)
     user = Maybe(FalseyUser.new(name = 'foo', subscribed = true))
-    user.subscribed.fetch(false).should be_true
-    user.subscribed.truly?.should be_true
+    user.subscribed.fetch(false).should be true
+    user.subscribed.truly?.should be true
 
     user = Maybe(nil)
-    user.subscribed.fetch(false).should be_false
-    user.subscribed.truly?.should be_false
+    user.subscribed.fetch(false).should be false
+    user.subscribed.truly?.should be false
   end
 
   it 'allows to use map' do

@@ -74,9 +74,10 @@ module Monadic
       undef name
 
       # @return the default value passed
-      def fetch(default=nil)
-        return self if default.nil?
-        return default
+      def fetch(*args)
+        args.length == 0 ?
+          Nothing :
+          args[0]
       end
       alias :_ :fetch
 
