@@ -21,6 +21,7 @@ require 'spec_helper'
     it 'fetches a nil value' do
       Maybe(nil).fetch(nil).should == nil
       Maybe(nil)._(nil).should == nil
+      Maybe(nil)._('').should == ''
     end
 
     it 'Nothing#to_s is "Nothing"' do
