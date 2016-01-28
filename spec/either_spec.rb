@@ -107,7 +107,7 @@ describe Monadic::Either do
   it 'works' do
     either = Either(true).
               bind -> { User.find(-1) }
-    either.failure?.should be_true
+    either.failure?.should be true
     RuntimeError.should === either.fetch
   end
 
@@ -199,11 +199,11 @@ describe Monadic::Either do
   end
 
   it 'allows to check whether the result was a success or failure' do
-    Success(0).success?.should be_true
-    Success(1).failure?.should be_false
+    Success(0).success?.should be true
+    Success(1).failure?.should be false
 
-    Failure(2).success?.should be_false
-    Failure(3).failure?.should be_true
+    Failure(2).success?.should be false
+    Failure(3).failure?.should be true
   end
 
   it 'supports Either.chain' do

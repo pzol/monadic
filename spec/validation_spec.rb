@@ -36,8 +36,8 @@ describe Monadic::Validation do
 
     failure = validate(Person.new(age = 's', gender = :male, sobriety = :drunk, name = 'test'))
     failure.should be_a Failure
-    failure.success?.should be_false
-    failure.failure?.should be_true
+    failure.success?.should be false
+    failure.failure?.should be true
     failure.should == Failure(["Age must be > 0", "No drunks allowed"])
 
     success = validate(Person.new(age = 30, gender = :male, sobriety = :sober, name = 'test'))
